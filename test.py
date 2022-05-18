@@ -1,22 +1,45 @@
 import os
-from slackclient import SlackClient
+import logging
+from flask import Flask
+from slack import WebClient
+from slackeventsapi import SlackEventAdapter
 
-SLACK_TOKEN = os.environ.get('xoxb-3537687436610-3550389206065-Qg2pPAEixOyo15Vy4O3G7xgb')
+SLACK_TOKEN = ''
 
-slack_client = SlackClient(SLACK_TOKEN)
+# Initialize a Flask app to host the events adapter
+app = Flask(__name__)
 
-def list_channels():
-    channels_call = slack_client.api_call("channels.list")
-    print(channels_call)
-    if channels_call.get('ok'):
-        return channels_call['channels']
-    return None 
+# Create an events adapter and register it to an endpoint in the slack app for event ingestion.
+slack_events_adapter = SlackEventAdapter('', "/slack/events", app)
 
-if __name__ == '__main__':
-    channels = list_channels()
-    if channels:
-        print("Channels: ")
-        for c in channels:
-            print(c['name'] + " (" + c['id'] + ")")
-    else:
-        print("Unable to authenticate.")
+# Create a slack client
+slack_web_client = WebClient(token=SLACK_TOKEN)
+
+
+# Get the onboarding message payload
+message = {
+   "channel":"conversational-agent",
+   "blocks":[
+      {
+         "type":"section",
+         "text":{
+            "type":"mrkdwn",
+            "text":"Gianmario sei un maestro"
+         }
+      }
+   ]
+}
+
+@slack_events_adapter.on("message")
+def answer(payload):
+    event = payload.get("event", {})
+    text = event.get("text")
+    if event.get('bot_id') is None:
+        return slack_web_client.chat_postMessage(**message)
+
+
+if __name__ == "__main__":
+
+    # Run your app on your externally facing IP address on port 3000 instead of
+    # running it on localhost, which is traditional for development.
+    app.run(host='0.0.0.0', port=3000)
