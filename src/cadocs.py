@@ -7,6 +7,7 @@ from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 from intent_manager import IntentManager
 from intent_resolver import IntentResolver
+from utils import CadocsIntents
 
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
@@ -15,6 +16,11 @@ slack_events_adapter = SlackEventAdapter('0d19788edc52c4dabd318fd2f6b0ae2c', "/s
 # Create a slack client
 SLACK_TOKEN = 'xoxb-3537687436610-3550389206065-Qg2pPAEixOyo15Vy4O3G7xgb'
 slack_web_client = WebClient(token=SLACK_TOKEN)
+
+
+# create our chatbot instance
+cadocs = Cadocs()
+
 
 # This event will fire up every time there is a new message on a chat with the bot invited
 @slack_events_adapter.on("message")
@@ -28,10 +34,9 @@ def answer(payload):
         username = user.get('user').get('profile').get('first_name')
         # Get the text written in chat
         text = event.get("text")
+        print(text)
         # Get the channel used by the writer in order to write back in it
         channel = event.get('channel')
-        # create our chatbot instance
-        cadocs = Cadocs()
         # ask the chatbot for an answer
         message = cadocs.new_message(text, channel, username)
         # post the answer message in chat
@@ -51,35 +56,19 @@ class Cadocs:
         resolver = IntentResolver()
         # tell the resolver which intent it has to fire 
         results = resolver.resolve_intent(intent, entities)
-        # build the text of the message based on the results (TODO: generalize)
-        text = ""
-        for t in results:
-            text = text + t + ""
         # ask a function to create a slack message
-        message = self.build_message(text, username, channel)
-        return message
+        response = resolver.build_message(results, username, channel, intent, entities)
+        # build the text of the message based on the results (TODO: generalize)
+        return response
 
-    def build_message(self, text, username,  channel):
-        message = {
-                "channel":channel,
-                "blocks":[
-                    {
-                        "type":"section",
-                        "text":{
-                            "type":"mrkdwn",
-                            "text":"Hi " + username +" :wave: \n"
-                        }
-                    },
-                    {
-                        "type":"section",
-                        "text":{
-                            "type":"mrkdwn",
-                            "text":text
-                        }
-                    }
-                ]
-            } 
-        return message
+    def save_execution(self, results, exec_type, date, repo):
+        self.results = results
+        self.exec_type = exec_type
+        self.date = date
+        self.repo = repo
+    
+    def get_last_execution(self):
+        return self.results, self.exec_type, self.date, self.repo
     
 if __name__ == "__main__":
 

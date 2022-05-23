@@ -1,5 +1,6 @@
 from utils import CadocsIntents
 
+# the Intent Manager is used to detect the Intent behind an user's message
 class IntentManager:
     def detect_intent(self, text):
         #
