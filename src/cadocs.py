@@ -18,8 +18,6 @@ SLACK_TOKEN = 'xoxb-3537687436610-3550389206065-Qg2pPAEixOyo15Vy4O3G7xgb'
 slack_web_client = WebClient(token=SLACK_TOKEN)
 
 
-# create our chatbot instance
-cadocs = Cadocs()
 
 
 # This event will fire up every time there is a new message on a chat with the bot invited
@@ -34,7 +32,8 @@ def answer(payload):
         username = user.get('user').get('profile').get('first_name')
         # Get the text written in chat
         text = event.get("text")
-        print(text)
+        # create our chatbot instance
+        cadocs = Cadocs()
         # Get the channel used by the writer in order to write back in it
         channel = event.get('channel')
         # ask the chatbot for an answer
