@@ -144,3 +144,96 @@
 		}
 	]
 }
+
+
+{
+	"blocks": [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Hi user :wave:",
+				"emoji": true
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Since *community smells* are a recent introduction in the Software Engineering, i can only detect ten different ones. In the following list you will find a brief description for each, with a star rating of how impactful we think it could be in a software development community."
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Community Smell 1*\n:star::star: - CS1\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Community Smell 2*\n:star::star::star: - CS2\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Community Smell 3*\n:star: - CS3\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "If you want to learn more about *community smells*, you can visit the following link:\n https://boh \n Also, feel free to get in touch with us to have a discussion about the subject! "
+			}
+		}
+	]
+}
+
+
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Did we correctly guess your intent?"
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "Yes",
+						"emoji": true
+					},
+					"value": "yes",
+					"action_id": "intent-yes"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "No",
+						"emoji": true
+					},
+					"value": "no",
+					"action_id": "intent-no"
+				}
+			]
+		}
+	]
+}

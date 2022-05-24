@@ -9,6 +9,12 @@ class IntentManager:
         # it could also return the list of entities found in the text (repo link, date, etc)
         #
         entities = ["https://github.com/tensorflow/ranking"]
-        # we assume for now the intent is get_smells
-        return CadocsIntents.GetSmells, entities
+        
+        if text == "report":
+            entities.append("date")
+            return CadocsIntents.Report, entities
+        elif text == "info":
+            return CadocsIntents.Info, []
+        else:
+            return CadocsIntents.GetSmells, entities
 

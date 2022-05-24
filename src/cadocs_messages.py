@@ -1,7 +1,8 @@
 
 
-# building of the message for the intent GetCommunitySmells
-def get_cs_message(smells, channel, user, repo):
+# building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
+# TODO: include DATE param
+def build_cs_message(smells, channel, user, entities):
     # mocked strategies
     strategies = ["str1", "str2"]
     # block of the message
@@ -21,7 +22,7 @@ def get_cs_message(smells, channel, user, repo):
             "type": "section",
             "text": {
                 "type": "plain_text",
-                "text": "This is the community smells we were able to detect in the repository "+repo+" :",
+                "text": "This is the community smells we were able to detect in the repository "+entities[0]+" :",
                 "emoji": True
             }
         }
@@ -82,7 +83,7 @@ def get_cs_message(smells, channel, user, repo):
         "blocks": blocks
     }
 
-def build_report_message(channel, exec_type, results, user, repo):
+def build_report_message(channel, exec_type, results, user, entities):
     blocks = []
     blocks.append(
         {
@@ -99,7 +100,7 @@ def build_report_message(channel, exec_type, results, user, repo):
 			"text": {
 				"type": "plain_text",
 				"text": "This is a summary of your last execution",
-				"emoji": true
+				"emoji": True
 			}
 		})
     blocks.append({
@@ -111,19 +112,19 @@ def build_report_message(channel, exec_type, results, user, repo):
 				},
 				{
 					"type": "mrkdwn",
-					"text": "*Repository:*\n"+repo
+					"text": "*Repository:*\n"+entities[0]
 				}
 			]
 		})
     smells = ""
     for r in results:
-        smells = smells + "r\n"
+        smells = smells + r + "\n"
     blocks.append({
 			"type": "section",
 			"fields": [
 				{
 					"type": "mrkdwn",
-					"text": "*Date:*\n"+date
+					"text": "*Date:*\n"+entities[1]
 				},
 				{
 					"type": "mrkdwn",
@@ -136,3 +137,59 @@ def build_report_message(channel, exec_type, results, user, repo):
         "channel":channel,
         "blocks": blocks
     }
+
+def build_info_message(channel, user):
+    return {
+    "channel": channel,
+	"blocks": [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Hi "+user+" :wave:",
+				"emoji": True
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Since *community smells* are a recent introduction in the Software Engineering, i can only detect the following ten:"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn", 
+				"text": "*Organizational Silo Effect*\n:tractor::corn: - OSE\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",  
+				"text": "*Black-cloud Effect*\n:black_medium_square::cloud: - BCE\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn", 
+				"text": "*Prima-donnas Effect*\n:princess::ring: - PDE\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "If you want to learn more about *community smells*, you can visit the following link:\n https://boh \n Also, feel free to get in touch with us to have a discussion about the subject! "
+			}
+		}
+	]
+}
