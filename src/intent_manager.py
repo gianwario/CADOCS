@@ -11,8 +11,8 @@ class IntentManager:
         entities = ["https://github.com/tensorflow/ranking"]
         
         if text == "report":
-            entities.append("date")
-            return CadocsIntents.Report, entities
+            
+            return CadocsIntents.Report, []
         elif text == "info":
             return CadocsIntents.Info, []
         else:

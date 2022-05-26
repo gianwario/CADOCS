@@ -1,0 +1,63 @@
+
+    [
+        {
+            "acronym":"OSE",
+            "name":"Organizational Silo Effect",
+            "description":"Siloed areas of the community that do not communicate, except through one or two of their respective members.",
+            "emoji":":busts_in_silhouette::bust_in_silhouette::busts_in_silhouette:"
+        },
+        {
+            "acronym":"BCE",
+            "name":"Black-cloud Effect",
+            "description":"Information overload due to lack of structured communications or cooperation governance.",
+            "emoji":":black_circle::cloud::black_circle:"
+        },
+        {
+            "acronym":"PDE",
+            "name":"Prima-donnas Effect",
+            "description":"A team of people is unwilling to respect external changes from other team members due to inefficiently structured collaboration within a community.",
+            "emoji":""
+        },
+        {
+            "acronym":"SV",
+            "name":"Sharing Villainy",
+            "description":"Cause of a lack of information exchange activities, team members share essential knowledge such as outdated, wrong and unconfirmed information.",
+            "emoji":""
+        },
+        {
+            "acronym":"OS",
+            "name":"Organizational Skirmish",
+            "description":"A misalignment between different expertise levels of individuals involved in the project leads to dropped productivity and affects the project's timeline and cost.",
+            "emoji":""
+        },
+        {
+            "acronym":"SD",
+            "name":"Solution Defiance",
+            "description":"The development community presents different levels of cultural and experience background, leading to the division of the community into similar subgroups with completely conflicting opinions.",
+            "emoji":""
+        },
+        {
+            "acronym":"RS",
+            "name":"Radio Silence",
+            "description":"One member interposes herself into every formal interaction across more sub-communities with little flexibility to introduce other channels.",
+            "emoji":":mute::radio::mute:"
+        },
+        {
+            "acronym":"TFS",
+            "name":"Truck Factor Smell",
+            "description":"Risk of significant knowledge loss due to the turnover of developers resulting from the fact that project information and knowledge are concentrated in a minority of the developers.",
+            "emoji":":truck::running::running:"
+        },
+        {
+            "acronym":"UI",
+            "name":"Unhealthy Interaction",
+            "description":"Long delays in stakeholder communications cause slow, light and brief conversations and discussions.",
+            "emoji":":no_mouth::no_mouth::no_mouth:"
+        },
+        {
+            "acronym":"TC",
+            "name":"Toxic Communication",
+            "description":"Long delays in stakeholder communications cause slow, light and brief conversations and discussions.",
+            "emoji":":bust_in_silhouette::anger::bust_in_silhouette:"
+        }
+    ]

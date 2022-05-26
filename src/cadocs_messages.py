@@ -1,3 +1,4 @@
+import json
 
 
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
@@ -139,57 +140,49 @@ def build_report_message(channel, exec_type, results, user, entities):
     }
 
 def build_info_message(channel, user):
-    return {
-    "channel": channel,
-	"blocks": [
-		{
+    blocks = []
+    blocks.append({
 			"type": "header",
 			"text": {
 				"type": "plain_text",
 				"text": "Hi "+user+" :wave:",
 				"emoji": True
 			}
-		},
-		{
+		})
+    blocks.append({
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
 				"text": "Since *community smells* are a recent introduction in the Software Engineering, i can only detect the following ten:"
 			}
-		},
-		{
+		})
+    blocks.append({
 			"type": "divider"
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn", 
-				"text": "*Organizational Silo Effect*\n:tractor::corn: - OSE\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",  
-				"text": "*Black-cloud Effect*\n:black_medium_square::cloud: - BCE\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn", 
-				"text": "*Prima-donnas Effect*\n:princess::ring: - PDE\n bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-			}
-		},
-		{
+		})
+    
+    with open('src/community_smells.json') as fp:
+        data = json.load(fp)
+        for i in data:
+            blocks.append(
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn", 
+                        "text": "*"+i.get('name')+"*  -  "+i.get('acronym')+"  -  "+i.get('emoji')+"\n"+i.get('description')
+                    }
+                }
+            )
+    blocks.append({
 			"type": "divider"
-		},
-		{
+		})
+    blocks.append({
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
 				"text": "If you want to learn more about *community smells*, you can visit the following link:\n https://boh \n Also, feel free to get in touch with us to have a discussion about the subject! "
 			}
-		}
-	]
-}
+		})
+    return {
+        "channel": channel,
+        "blocks": blocks
+    }

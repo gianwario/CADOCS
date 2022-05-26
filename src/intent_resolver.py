@@ -3,6 +3,7 @@ from tool_selector import ToolSelector
 from tools import CsDetectorTool
 import cadocs_messages
 
+
 # the Intent Resolver is used to handle the execution given a predicted intent
 class IntentResolver:
     def resolve_intent(self, intent, entities):
@@ -20,12 +21,13 @@ class IntentResolver:
                 return []
             # build report message
             elif intent ==  CadocsIntents.Report:
-                return ["LE-CS1", "LE-CS2"]
+                return []
                     
         # else if intent in OtherToolIntent
 
     # this function will format the message basing on the intent
-    def build_message(self, results, username, channel, intent, entities):
+    def build_message(self, results, user, channel, intent, entities):
+        username = user.get('profile').get('first_name')
         if intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate:
             response = cadocs_messages.build_cs_message(results, channel, username, entities)
             return response

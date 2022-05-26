@@ -6,6 +6,8 @@ from flask import Flask
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 from cadocs import Cadocs
+from datetime import date
+
 
 
 # TODO: ricreare app slack coi permessi giusti e mettere informazioni confidenziali nell'env 
@@ -29,18 +31,19 @@ def answer(payload):
     # Get the onboarding message payload
     event = payload.get("event", {})
     conversation.append(event)
-    print(conversation)
+    #print(conversation)
     # check wether or not the message has been written by the bot (we dont have to answer)
     if event.get('bot_id') is None:
         # get the user's name to print it in answer
-        user = slack_web_client.users_info(user=event.get('user'))
-        username = user.get('user').get('profile').get('first_name')
+        req_user = slack_web_client.users_info(user=event.get('user'))
+        user = req_user.get('user')
         # Get the text written in chat
         text = event.get("text")
         # Get the channel used by the writer in order to write back in it
         channel = event.get('channel')
         # ask the chatbot for an answer
-        response, results, entities, intent = cadocs.new_message(text, channel, username)
+        response, results, entities, intent = cadocs.new_message(text, channel, user)
+        cadocs.save_execution(results, "Get Community Smells", date.today().strftime("%d/%m/%Y"), entities[0], user.get('id'))
         # post the answer message in chat
         return slack_web_client.chat_postMessage(**response)
 
@@ -48,4 +51,4 @@ if __name__ == "__main__":
 
     # Run your app on your externally facing IP address on port 3000 instead of
     # running it on localhost, which is traditional for development.
-    app.run(port=5000)
+    app.run(port=5000, threaded=True)
