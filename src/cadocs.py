@@ -5,7 +5,9 @@ import json
 from os import path
 
 class Cadocs:
+
     def __init__(self):
+        self.last_repo = ""
         return
 
     def new_message(self, text, channel, user):
@@ -13,19 +15,31 @@ class Cadocs:
         manager = IntentManager()
         # detect the intent
         intent, entities = manager.detect_intent(text)
-        # instantiate the resolver
-        resolver = IntentResolver()
-        # tell the resolver which intent it has to fire 
-        results = resolver.resolve_intent(intent, entities)
-        # ask a function to create a slack message
-        if(intent == CadocsIntents.Report):
-            last_ex = self.get_last_execution(user.get('id'))
-            results = last_ex.get('results')
-            entities = [last_ex.get('repo'), last_ex.get('date')]
+        if not self.is_locked(entities[0], intent):
+            # instantiate the resolver
+            resolver = IntentResolver()
+            # tell the resolver which intent it has to fire 
+            results = resolver.resolve_intent(intent, entities)
+            # ask a function to create a slack message
+            if(intent == CadocsIntents.Report):
+                last_ex = self.get_last_execution(user.get('id'))
+                results = last_ex.get('results')
+                entities = [last_ex.get('repo'), last_ex.get('date'), last_ex.get('exec_type')]
 
-        response = resolver.build_message(results, user, channel, intent, entities)
-        # build the text of the message based on the results (TODO: generalize)
-        return response, results, entities, intent
+            response = resolver.build_message(results, user, channel, intent, entities)
+            if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
+                self.last_repo = ""
+            # build the text of the message based on the results (TODO: generalize)
+            return response, results, entities, intent
+        else:
+            return {"channel":channel, "blocks":[{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Wait",
+				"emoji": True
+			}
+		}]}, None, None, None
 
     # this method saves execution results to file system
     # in order to retrieve it when needed
@@ -73,4 +87,12 @@ class Cadocs:
             if ex.get('user') == user:
                 user_execs.append(ex)
         return user_execs[user_execs.__len__()-1]
+
+    def is_locked(self, repo, intent):
+
+        if repo == self.last_repo and intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate:
+            return True
+        else:
+            self.last_repo = repo
+            return False
     

@@ -12,9 +12,9 @@ class IntentManager:
         
         if text == "report":
             
-            return CadocsIntents.Report, []
+            return CadocsIntents.Report, [""]
         elif text == "info":
-            return CadocsIntents.Info, []
+            return CadocsIntents.Info, [""]
         else:
             return CadocsIntents.GetSmells, entities
 

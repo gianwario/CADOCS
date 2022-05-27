@@ -32,7 +32,7 @@ class IntentResolver:
             response = cadocs_messages.build_cs_message(results, channel, username, entities)
             return response
         elif intent == CadocsIntents.Report:
-            response = cadocs_messages.build_report_message(channel, "Community Smell Detection", results, username, entities)
+            response = cadocs_messages.build_report_message(channel, entities[2], results, username, entities)
             return response
         elif intent == CadocsIntents.Info:
             response = cadocs_messages.build_info_message(channel, username)

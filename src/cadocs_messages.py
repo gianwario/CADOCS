@@ -29,46 +29,38 @@ def build_cs_message(smells, channel, user, entities):
         }
     )
     # appending blocks for each smell detected
-    for s in smells:
-        blocks.append(
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": s
-                }
-            }
-        )
-    blocks.append({
-                "type": "section",
-                "text": {
-                    "type": "plain_text",
-                    "text": "We suggest you the following strategies:",
-                    "emoji": True
-                }
-            })
-    # appending strategies blocks for each smell
-    for s in smells:
+    with open('src/community_smells.json') as fp:
+        data = json.load(fp)
+        for s in smells:
+            smell_data = [sm for sm in data if sm["acronym"] == s]
+            
             blocks.append({
-                "type": "divider"
-            })
-
-            blocks.append({
-                "type": "header",
-                "text": {
-                    "type": "plain_text",
-                    "text": "For "+s+", you could try:"
-                }
-            })        
-            for st in strategies:
-                blocks.append({
+                    "type": "divider"
+                })
+            blocks.append(
+                {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": st
+                        "text":"*"+ s +"* "+ smell_data[0].get("name") +" "+smell_data[0].get("emoji") +"\n_"+smell_data[0].get("description")+"_\nSome possible strategies are:"
                     }
-                })
-    
+                }
+            )
+            
+            for st in strategies:
+                    blocks.append({
+                        "type": "section",
+                        "fields": [{
+                            "type": "mrkdwn",
+                            "text": "-  "+st+"" 
+                        }, {
+                            "type": "mrkdwn",
+                            "text": ":star::star::star:",
+                        }
+                    ]})
+    blocks.append({
+                "type": "divider"
+            })
     blocks.append(
         {
             "type": "section",

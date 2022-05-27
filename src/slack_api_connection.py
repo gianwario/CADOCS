@@ -7,6 +7,7 @@ from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 from cadocs import Cadocs
 from datetime import date
+from utils import CadocsIntents
 
 
 
@@ -43,7 +44,8 @@ def answer(payload):
         channel = event.get('channel')
         # ask the chatbot for an answer
         response, results, entities, intent = cadocs.new_message(text, channel, user)
-        cadocs.save_execution(results, "Get Community Smells", date.today().strftime("%d/%m/%Y"), entities[0], user.get('id'))
+        if(intent == CadocsIntents.GetSmells and results != None):
+            cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y"), entities[0], user.get('id'))
         # post the answer message in chat
         return slack_web_client.chat_postMessage(**response)
 
