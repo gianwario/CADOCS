@@ -4,8 +4,6 @@ import json
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
 # TODO: include DATE param
 def build_cs_message(smells, channel, user, entities):
-    # mocked strategies
-    strategies = ["str1", "str2"]
     # block of the message
     blocks = []
     blocks.append(
@@ -46,7 +44,7 @@ def build_cs_message(smells, channel, user, entities):
                     }
                 }
             )
-            
+            strategies = smell_data[0].get("strategies")
             for st in strategies:
                     blocks.append({
                         "type": "section",

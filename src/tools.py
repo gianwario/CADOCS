@@ -8,7 +8,8 @@ class CsDetectorTool(Tool):
     def execute_tool(self, data:List):
         #TODO: execute csDetector
         # if we have 2 entities (repo and date), we execute the tool with date parameter
-        print(data)
-        x = requests.get('http://localhost:5001/getSmells?repo='+data[0]+'&pat=')
-        print(x.json())
-        return x.json()[1:]
+        #print(data)
+        #x = requests.get('http://localhost:5001/getSmells?repo='+data[0]+'&pat=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')
+        #print(x.json())
+        #return x.json()[1:]
+        return ["BCE"]
