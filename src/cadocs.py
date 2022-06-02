@@ -8,13 +8,14 @@ class Cadocs:
 
     def __init__(self):
         self.last_repo = ""
+        self.asked_user= ""
         return
 
     def new_message(self, text, channel, user):
         # instantiate the manager which will tell us the intent
         manager = IntentManager()
         # detect the intent
-        intent, entities = manager.detect_intent(text)
+        intent, entities, confidence = manager.detect_intent(text)
         if not self.is_locked(entities[0], intent):
             # instantiate the resolver
             resolver = IntentResolver()
@@ -29,8 +30,8 @@ class Cadocs:
             response = resolver.build_message(results, user, channel, intent, entities)
             if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
                 self.last_repo = ""
-            # build the text of the message based on the results (TODO: generalize)
-            return response, results, entities, intent
+            # build the text of the message based on the results
+            return response, results, entities, intent, confidence
         else:
             return {"channel":channel, "blocks":[{
 			"type": "header",
@@ -40,6 +41,53 @@ class Cadocs:
 				"emoji": True
 			}
 		}]}, None, None, None
+
+
+    # this method build a message that will ask the user if
+    # the intent was correctly predicted
+    # this information will be used to retrain the model
+    def ask_confirm(self, intent, channel, user):
+        self.asked_user = user
+        mess = {
+            "channel": channel,
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Was this your intent? "+ intent
+                    }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Yes",
+                                "emoji": True
+                            },
+                            "value": "yes",
+                            "action_id": "action-yes"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "No",
+                                "emoji": True
+                            },
+                            "value": "no",
+                            "action_id": "action-no"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        return mess
+        
 
     # this method saves execution results to file system
     # in order to retrieve it when needed
@@ -90,7 +138,7 @@ class Cadocs:
 
     def is_locked(self, repo, intent):
 
-        if repo == self.last_repo and intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate:
+        if repo == self.last_repo and (intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
             return True
         else:
             self.last_repo = repo

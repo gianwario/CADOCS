@@ -2,7 +2,7 @@ import os
 import logging
 import requests
 import json
-from flask import Flask
+from flask import Flask, request, jsonify, json
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 from cadocs import Cadocs
@@ -43,14 +43,28 @@ def answer(payload):
         # Get the channel used by the writer in order to write back in it
         channel = event.get('channel')
         # ask the chatbot for an answer
-        response, results, entities, intent = cadocs.new_message(text, channel, user)
-        if(intent == CadocsIntents.GetSmells and results != None):
+        response, results, entities, intent, confidence = cadocs.new_message(text, channel, user)
+        print(response)
+        if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
             cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y"), entities[0], user.get('id'))
+        slack_web_client.chat_postMessage(**response)
+        if confidence < 0.77 and confidence >= 0.55:
+            slack_web_client.chat_postMessage(**cadocs.ask_confirm(intent.value, channel, user.get('id')))
         # post the answer message in chat
-        return slack_web_client.chat_postMessage(**response)
+        return {"message":"true"}
+
+@app.route("/slack/action-received", methods=["POST"])
+def action_received():
+    data = json.loads(request.form["payload"])
+    user_id = data.get("user").get("id")
+    action = data.get("actions")[0].get("action_id")
+    if(user_id == cadocs.asked_user):
+        if(action == "action-yes"):
+            print("yes")
+        elif(action == "action-no"):
+            print("no")
+
+    return {"message":"true"}
 
 if __name__ == "__main__":
-
-    # Run your app on your externally facing IP address on port 3000 instead of
-    # running it on localhost, which is traditional for development.
     app.run(port=5002, threaded=True)

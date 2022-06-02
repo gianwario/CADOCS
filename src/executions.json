@@ -622,5 +622,115 @@
         "results": [
             "BCE"
         ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "BCE"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "BCE"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "02/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "SD",
+            "UI"
+        ]
     }
 ]

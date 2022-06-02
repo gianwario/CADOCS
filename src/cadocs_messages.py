@@ -40,22 +40,32 @@ def build_cs_message(smells, channel, user, entities):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text":"*"+ s +"* "+ smell_data[0].get("name") +" "+smell_data[0].get("emoji") +"\n_"+smell_data[0].get("description")+"_\nSome possible strategies are:"
+                        "text":"*"+ s +"* "+ smell_data[0].get("name") +" "+smell_data[0].get("emoji") +"\n_"+smell_data[0].get("description")+"_"
                     }
                 }
             )
             strategies = smell_data[0].get("strategies")
-            for st in strategies:
-                    blocks.append({
-                        "type": "section",
-                        "fields": [{
-                            "type": "mrkdwn",
-                            "text": "-  "+st+"" 
-                        }, {
-                            "type": "mrkdwn",
-                            "text": ":star::star::star:",
-                        }
-                    ]})
+
+            if(len(strategies) > 0):
+                
+                blocks.append({
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Some possible mitigation strategies are:"
+                    }
+                })
+                for st in strategies:
+                        blocks.append({
+                            "type": "section",
+                            "fields": [{
+                                "type": "mrkdwn",
+                                "text": ">"+st+"" 
+                            }, {
+                                "type": "mrkdwn",
+                                "text": ":star::star::star:",
+                            }
+                        ]})
     blocks.append({
                 "type": "divider"
             })

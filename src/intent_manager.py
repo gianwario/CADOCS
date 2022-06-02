@@ -19,14 +19,13 @@ class IntentManager:
             entities = [x for x in results.get('entities')[0] if x]
         else:
             entities = []
-        print(nlu_intent, nlu_intent_confidence, entities)
         
         if nlu_intent == "report":
-            return CadocsIntents.Report, [""]
+            return CadocsIntents.Report, [""], nlu_intent_confidence
         elif nlu_intent == "info":
-            return CadocsIntents.Info, [""]
+            return CadocsIntents.Info, [""], nlu_intent_confidence
         elif nlu_intent == "get_smells":
-            return CadocsIntents.GetSmells, entities
+            return CadocsIntents.GetSmells, entities, nlu_intent_confidence
         elif nlu_intent == "get_smells_date":
-            return CadocsIntents.GetSmellsDate, entities
+            return CadocsIntents.GetSmellsDate, entities, nlu_intent_confidence
 
