@@ -9,14 +9,21 @@ class Cadocs:
     def __init__(self):
         self.last_repo = ""
         self.asked_user= ""
+        # the conversation queue will be used to check whether or not a message has already been answered
+        self.conversation_queue = []
         return
 
-    def new_message(self, text, channel, user):
+    def new_message(self, exec_data, channel, user):
+        print(exec_data)
+        text = exec_data["text"]
         # instantiate the manager which will tell us the intent
         manager = IntentManager()
         # detect the intent
         intent, entities, confidence = manager.detect_intent(text)
-        if not self.is_locked(entities[0], intent):
+        if not exec_data["approved"] and confidence < 0.77 and confidence >= 0.55:
+            self.conversation_queue.append(exec_data)
+            return self.ask_confirm(intent.value, channel, user.get('id')), None, None, None
+        elif not self.is_locked(entities[0], intent) and (confidence >= 0.77 or exec_data["approved"]):
             # instantiate the resolver
             resolver = IntentResolver()
             # tell the resolver which intent it has to fire 
@@ -30,8 +37,10 @@ class Cadocs:
             response = resolver.build_message(results, user, channel, intent, entities)
             if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
                 self.last_repo = ""
+            exec_data.update({"executed" : True})
+            self.conversation_queue.append(exec_data)
             # build the text of the message based on the results
-            return response, results, entities, intent, confidence
+            return response, results, entities, intent
         else:
             return {"channel":channel, "blocks":[{
 			"type": "header",
@@ -95,16 +104,21 @@ class Cadocs:
     # and basing on the following study
     # http://matthewrocklin.com/blog/work/2015/03/16/Fast-Serialization
     def save_execution(self, results, exec_type, date, repo, user):
-        filename = 'src/executions.json'
+        filename = f'src/executions/executions_{user}.json'
         list_obj = []
         # Check if file exists
         if path.isfile(filename) is False:
-            raise Exception("File not found")
+            with open(filename, 'w'):
+                pass
+
  
-        # Read JSON file
         with open(filename) as fp:
-            list_obj = json.load(fp)
-        list_obj.append(
+            try:
+                list_obj = json.load(fp)
+            except:
+                pass
+            print(list_obj)
+            list_obj.append(
             {
                 "user": user,
                 "exec_type": exec_type,
@@ -114,14 +128,14 @@ class Cadocs:
             }
         )
         with open(filename, 'w') as json_file:
-            json.dump(list_obj, json_file, 
-                                indent=4,  
-                                separators=(',',': '))
-        
+                json.dump(list_obj, json_file, 
+                            indent=4,  
+                            separators=(',',': '))
+        # Read JSON file
 
 
     def get_last_execution(self, user):
-        filename = 'src/executions.json'
+        filename = f'src/executions/executions_{user}.json'
         list_obj = []
         # Check if file exists
         if path.isfile(filename) is False:
@@ -130,11 +144,8 @@ class Cadocs:
         # Read JSON file
         with open(filename) as fp:
             list_obj = json.load(fp)
-        user_execs = []
-        for ex in list_obj:
-            if ex.get('user') == user:
-                user_execs.append(ex)
-        return user_execs[user_execs.__len__()-1]
+
+        return list_obj[list_obj.__len__()-1]
 
     def is_locked(self, repo, intent):
 

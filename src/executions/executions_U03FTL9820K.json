@@ -1,0 +1,14 @@
+[
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "03/06/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    }
+]
