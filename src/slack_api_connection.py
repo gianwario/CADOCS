@@ -104,7 +104,7 @@ def handle_action(data):
             exec_data.update({"approved" : True})
             response, results, entities, intent = cadocs.new_message(exec_data, channel, user)
             if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
-                cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y"), entities[0], user_id)
+                cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y %H%M%S"), entities[0], user_id)
             # post the answer message in chat
             slack_web_client.chat_postMessage(**response)
             return {"message":"true"}

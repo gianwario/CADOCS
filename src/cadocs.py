@@ -26,7 +26,8 @@ class Cadocs:
         elif not self.is_locked(entities[0], intent) and (confidence >= 0.77 or exec_data["approved"]):
             # instantiate the resolver
             resolver = IntentResolver()
-            # tell the resolver which intent it has to fire 
+            # tell the resolver which intent it has to fire
+            entities.append(user["id"])
             results = resolver.resolve_intent(intent, entities)
             # ask a function to create a slack message
             if(intent == CadocsIntents.Report):
