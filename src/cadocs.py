@@ -3,6 +3,9 @@ from intent_resolver import IntentResolver
 from utils import CadocsIntents
 import json
 from os import path
+import os
+from dotenv import load_dotenv
+load_dotenv('src/.env')
 
 class Cadocs:
 
@@ -20,10 +23,10 @@ class Cadocs:
         manager = IntentManager()
         # detect the intent
         intent, entities, confidence = manager.detect_intent(text)
-        if not exec_data["approved"] and confidence < 0.77 and confidence >= 0.55:
+        if not exec_data["approved"] and confidence < float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) and confidence >= float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
             self.conversation_queue.append(exec_data)
             return self.ask_confirm(intent.value, channel, user.get('id')), None, None, None
-        elif not self.is_locked(entities[0], intent) and (confidence >= 0.77 or exec_data["approved"]):
+        elif not self.is_locked(entities[0], intent) and (confidence >= float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) or exec_data["approved"]):
             # instantiate the resolver
             resolver = IntentResolver()
             # tell the resolver which intent it has to fire
