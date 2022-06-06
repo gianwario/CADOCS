@@ -25,7 +25,7 @@ class Cadocs:
         intent, entities, confidence = manager.detect_intent(text)
         if not exec_data["approved"] and confidence < float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) and confidence >= float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
             self.conversation_queue.append(exec_data)
-            return self.ask_confirm(intent.value, channel, user.get('id')), None, None, None
+            return self.ask_confirm(intent, channel, user.get('id')), None, None, None
         elif not self.is_locked(entities[0], intent) and (confidence >= float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) or exec_data["approved"]):
             # instantiate the resolver
             resolver = IntentResolver()
@@ -61,6 +61,15 @@ class Cadocs:
     # this information will be used to retrain the model
     def ask_confirm(self, intent, channel, user):
         self.asked_user = user
+        text = ""
+        if intent == CadocsIntents.GetSmells:
+            text = "Do you want me to predict community smells?"
+        elif intent == CadocsIntents.GetSmellsDate:
+            text = "Do you want me to predict community smells starting from a specific date?"
+        elif intent == CadocsIntents.Report:
+            text = "Do you want me to show a report of your last execution?"
+        elif intent == CadocsIntents.Info:
+            text = "Do you want to know more about community smells?"
         mess = {
             "channel": channel,
             "blocks": [
@@ -68,7 +77,7 @@ class Cadocs:
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "Was this your intent? "+ intent
+                        "text": text
                     }
                 },
                 {

@@ -60,10 +60,10 @@ def build_cs_message(smells, channel, user, entities):
                             "type": "section",
                             "fields": [{
                                 "type": "mrkdwn",
-                                "text": ">"+st+"" 
+                                "text": ">"+st.get("strategy")+"" 
                             }, {
                                 "type": "mrkdwn",
-                                "text": ":star::star::star:",
+                                "text": st.get("stars"),
                             }
                         ]})
     blocks.append({

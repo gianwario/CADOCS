@@ -12,7 +12,10 @@
             "name":"Black-cloud Effect",
             "description":"Information overload due to lack of structured communications or cooperation governance.",
             "emoji":":black_circle::cloud::black_circle:",
-            "strategies":["Create communication plan", "Restructure the community", "Introduce a Social sanctioning mechanism"]
+            "strategies":[
+                {"strategy":"Create communication plan", "stars":":star::star::star:"}, 
+                {"strategy":"Restructure the community", "stars":":star::star:"},
+                {"strategy":"Introduce a Social sanctioning mechanism", "stars":":star::star:"}]
         },
         {
             "acronym":"PDE",
@@ -33,7 +36,14 @@
             "name":"Organizational Skirmish",
             "description":"A misalignment between different expertise levels of individuals involved in the project leads to dropped productivity and affects the project's timeline and cost.",
             "emoji":"",
-            "strategies":["Restructure the community", "Create communication plan", "Mentoring", "Cohesion exercising", "Monitoring", "Introduce a Social sanctioning mechanism"]
+            "strategies":[    
+                {"strategy":"Create communication plan", "stars":":star::star::star:"}, 
+                {"strategy":"Restructure the community", "stars":":star::star:"},
+                {"strategy":"Introduce a Social sanctioning mechanism", "stars":":star::star:"},
+                {"strategy":"Mentoring", "stars":":star::star:"},
+                {"strategy":"Cohesion exercising", "stars":":star::star:"},
+                {"strategy":"Monitoring", "stars":":star:"}
+            ]
         },
         {
             "acronym":"SD",
@@ -47,7 +57,14 @@
             "name":"Radio Silence",
             "description":"One member interposes herself into every formal interaction across more sub-communities with little flexibility to introduce other channels.",
             "emoji":":mute::radio::mute:",
-            "strategies":["Restructure the community", "Create communication plan", "Mentoring", "Cohesion exercising", "Monitoring", "Introducing a social-rewarding mechanism"]
+            "strategies":[
+                {"strategy":"Restructure the community", "stars":":star::star:"}, 
+                {"strategy":"Create communication plan", "stars":":star::star::star:"}, 
+                {"strategy":"Mentoring", "stars":":star::star:"}, 
+                {"strategy":"Cohesion exercising", "stars":":star::star:"}, 
+                {"strategy":"Monitoring", "stars":":star:"}, 
+                {"strategy":"Introduce a social-rewarding mechanism", "stars":":star::star:"}
+            ]
         },
         {
             "acronym":"TFS",

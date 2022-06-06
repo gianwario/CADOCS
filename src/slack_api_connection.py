@@ -11,6 +11,8 @@ from cadocs import Cadocs
 from datetime import date
 from utils import CadocsIntents
 from dotenv import load_dotenv
+import time
+
 
 
 
@@ -43,10 +45,9 @@ def answer(payload):
 
 
 def handle_request(payload):  
-    print(json.dumps(payload, indent=4, sort_keys=True))
-    print("\n\n")
     # Get the onboarding message payload
     event = payload.get("event", {})
+    # print(json.dumps(payload, indent=4, sort_keys=True))
     exec_data = {
         "id" : event.get("client_msg_id"),
         "user" : event.get("user"),
@@ -62,7 +63,7 @@ def handle_request(payload):
     '''         
     # print(conversation)
     # check wether or not the message has been written by the bot (we dont have to answer)
-    if event.get('bot_id') is None:
+    if event.get('bot_id') is None and event.get('user') is not None:
         # get the user's name to print it in answer
         req_user = slack_web_client.users_info(user=event.get('user'))
         user = req_user.get('user')
@@ -91,6 +92,15 @@ def action_received():
             args=(data,)
         )
     x.start()
+    blocks = [{
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": data.get("message").get("blocks")[0].get("text").get("text"),
+                    "emoji": True
+                }
+		    }]
+    slack_web_client.chat_update(channel=data.get("channel").get("id"), ts=data.get("message").get("ts"), blocks=blocks)
     response = make_response("", 200)
     response.headers['X-Slack-No-Retry'] = 1
     return response
@@ -114,6 +124,8 @@ def handle_action(data):
             progress = post_waiting_message(channel)
             # we run the tool
             response, results, entities, intent = cadocs.new_message(exec_data, channel, user)
+            r = requests.get("http://localhost:5000/update_dataset?message="+exec_data["text"]+"&intent="+intent.value)
+            print(r)
             progress.do_run = False
             if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
                 cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y %H%M%S"), entities[0], user_id)
@@ -153,12 +165,16 @@ def post_waiting_message(channel):
 # this method will show the cat-gress of the execution by updating itself until the main thread stops
 def update_waiting_message(channel, ts):
     i = 0
+    elapsed_time = 0
     t = threading.currentThread()
+    # maximum of about 10 minutes
     while getattr(t, "do_run", True):
         i = i + 1
         emojis = ""
         for j in range(i):
             emojis = emojis +":smile_cat:"
+        time.sleep(1)
+        elapsed_time += 1
         slack_web_client.chat_update(channel=channel, ts=ts, blocks=[
                     {
                     "type": "section",
