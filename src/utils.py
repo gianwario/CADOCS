@@ -9,7 +9,7 @@ class CadocsIntents(enum.Enum):
    Report = "report"
    Info = "info"
 
-def invalid_link(url):
+def valid_link(url):
    re_equ = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
    ck_url = re.findall(re_equ, url)
    if ck_url:
@@ -17,7 +17,7 @@ def invalid_link(url):
    else:
       return False
 
-def invalid_date(date):
+def valid_date(date):
    rs_date = re.findall('\d{2}/\d{2}/\d{4}',date)
    if(rs_date):
       ls = rs_date[0].split("/")

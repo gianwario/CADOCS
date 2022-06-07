@@ -5,7 +5,7 @@ import json
 from os import path
 import os
 from dotenv import load_dotenv
-from utils import invalid_link
+from utils import valid_link, valid_date
 load_dotenv('src/.env')
 
 class Cadocs:
@@ -25,16 +25,15 @@ class Cadocs:
         # detect the intent
         intent, entities, confidence = manager.detect_intent(text)
         if intent == CadocsIntents.GetSmells:
-            if not entities or invalid_link(entities[0]):
+            if not valid_link(entities[0]):
                 return self.error_message("url", channel, user.get('profile').get('first_name'))
         if intent == CadocsIntents.GetSmellsDate:
-            if not entities:
-                if invalid_link(entities[0]) and not invalid_date(entities[1]):
-                    return self.error_message("url", channel, user.get('profile').get('first_name'))
-                elif invalid_date(entities[1]) and not invalid_link(entities[0]):
-                    return self.error_message("date", channel, user.get('profile').get('first_name'))
-                elif invalid_link(entities[0]) and invalid_date(entities[1]):
-                    return self.error_message("date_url", channel, user.get('profile').get('first_name'))
+            if not valid_link(entities[0]) and valid_date(entities[1]):
+                return self.error_message("url", channel, user.get('profile').get('first_name'))
+            elif not valid_date(entities[1]) and valid_link(entities[0]):
+                return self.error_message("date", channel, user.get('profile').get('first_name'))
+            elif not valid_link(entities[0]) and not valid_date(entities[1]):
+                return self.error_message("date_url", channel, user.get('profile').get('first_name'))
         if not exec_data["approved"] and confidence < float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) and confidence >= float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
             self.conversation_queue.append(exec_data)
             return self.ask_confirm(intent, channel, user.get('id')), None, None, None
@@ -161,34 +160,24 @@ class Cadocs:
         # Read JSON file
         with open(filename) as fp:
             list_obj = json.load(fp)
-
+        print(list_obj.__len__()-1)
         return list_obj[list_obj.__len__()-1]
     
     def error_message(self, error_type, channel, username):
+        txt = ""
         if(error_type == "url"):
-            return {"channel":channel, "blocks":[{
-			"type": "header",
-			"text": {
-				"type": "plain_text",
-				"text": "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub.",
-				"emoji": True
-			}
-		}]}, None, None, None
+            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub."
         if(error_type == "date"):
-            return {"channel":channel, "blocks":[{
-			"type": "header",
-			"text": {
-				"type": "plain_text",
-				"text": "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct format is MM/DD/YYYY.",
-				"emoji": True
-			}
-		}]}, None, None, None
+            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct format is MM/DD/YYYY."
         if(error_type == "date_url"):
-            return {"channel":channel, "blocks":[{
-			"type": "header",
+            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY)."
+        
+        
+        return {"channel":channel, "blocks":[{
+			"type": "section",
 			"text": {
 				"type": "plain_text",
-				"text": "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY).",
+				"text": txt,
 				"emoji": True
 			}
 		}]}, None, None, None

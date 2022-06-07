@@ -64,8 +64,6 @@ def handle_request(payload):
         # get the user's name to print it in answer
         req_user = slack_web_client.users_info(user=event.get('user'))
         user = req_user.get('user')
-        # Get the text written in chat
-        text = event.get("text")
         # Get the channel used by the writer in order to write back in it
         channel = event.get('channel')
         # we start the progress
@@ -125,7 +123,7 @@ def handle_action(data):
             print(r)
             progress.do_run = False
             if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
-                cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y %H%M%S"), entities[0], user_id)
+                cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user_id)
             # update the answer message in chat
             slack_web_client.chat_update(channel=channel, ts=message_ts, blocks=response.get("blocks"))
             return {"message":"true"}
