@@ -5,6 +5,7 @@ import json
 from os import path
 import os
 from dotenv import load_dotenv
+from utils import invalid_link
 load_dotenv('src/.env')
 
 class Cadocs:
@@ -23,10 +24,21 @@ class Cadocs:
         manager = IntentManager()
         # detect the intent
         intent, entities, confidence = manager.detect_intent(text)
+        if intent == CadocsIntents.GetSmells:
+            if not entities or invalid_link(entities[0]):
+                return self.error_message("url", channel, user.get('profile').get('first_name'))
+        if intent == CadocsIntents.GetSmellsDate:
+            if not entities:
+                if invalid_link(entities[0]) and not invalid_date(entities[1]):
+                    return self.error_message("url", channel, user.get('profile').get('first_name'))
+                elif invalid_date(entities[1]) and not invalid_link(entities[0]):
+                    return self.error_message("date", channel, user.get('profile').get('first_name'))
+                elif invalid_link(entities[0]) and invalid_date(entities[1]):
+                    return self.error_message("date_url", channel, user.get('profile').get('first_name'))
         if not exec_data["approved"] and confidence < float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) and confidence >= float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
             self.conversation_queue.append(exec_data)
             return self.ask_confirm(intent, channel, user.get('id')), None, None, None
-        elif not self.is_locked(entities[0], intent) and (confidence >= float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) or exec_data["approved"]):
+        elif (confidence >= float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) or exec_data["approved"]):
             # instantiate the resolver
             resolver = IntentResolver()
             # tell the resolver which intent it has to fire
@@ -45,15 +57,7 @@ class Cadocs:
             self.conversation_queue.append(exec_data)
             # build the text of the message based on the results
             return response, results, entities, intent
-        else:
-            return {"channel":channel, "blocks":[{
-			"type": "header",
-			"text": {
-				"type": "plain_text",
-				"text": "Wait",
-				"emoji": True
-			}
-		}]}, None, None, None
+
 
 
     # this method build a message that will ask the user if
@@ -159,12 +163,33 @@ class Cadocs:
             list_obj = json.load(fp)
 
         return list_obj[list_obj.__len__()-1]
-
-    def is_locked(self, repo, intent):
-
-        if repo == self.last_repo and (intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
-            return True
-        else:
-            self.last_repo = repo
-            return False
+    
+    def error_message(self, error_type, channel, username):
+        if(error_type == "url"):
+            return {"channel":channel, "blocks":[{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub.",
+				"emoji": True
+			}
+		}]}, None, None, None
+        if(error_type == "date"):
+            return {"channel":channel, "blocks":[{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct format is MM/DD/YYYY.",
+				"emoji": True
+			}
+		}]}, None, None, None
+        if(error_type == "date_url"):
+            return {"channel":channel, "blocks":[{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY).",
+				"emoji": True
+			}
+		}]}, None, None, None
     

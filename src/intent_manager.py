@@ -12,20 +12,19 @@ class IntentManager:
 
         x = requests.get('http://localhost:5000/predict?message=' + text)
         results = x.json()
+        print(results)
         nlu_intent = results.get('intent').get('intent').get('name')
         nlu_intent_confidence = results.get('intent').get('intent').get('confidence')
-        entities_list = results.get('entities')
-        if len(entities_list) > 0:
-            entities = [x for x in results.get('entities')[0] if x]
-        else:
-            entities = []
-        
+        url = results.get('entities').get("url")
+        date = results.get("entities").get("date")
+        print(url)
+        print(date)
         if nlu_intent == "report":
-            return CadocsIntents.Report, [""], nlu_intent_confidence
+            return CadocsIntents.Report, [], nlu_intent_confidence
         elif nlu_intent == "info":
-            return CadocsIntents.Info, [""], nlu_intent_confidence
+            return CadocsIntents.Info, [], nlu_intent_confidence
         elif nlu_intent == "get_smells":
-            return CadocsIntents.GetSmells, entities, nlu_intent_confidence
+            return CadocsIntents.GetSmells, [url], nlu_intent_confidence
         elif nlu_intent == "get_smells_date":
-            return CadocsIntents.GetSmellsDate, entities, nlu_intent_confidence
+            return CadocsIntents.GetSmellsDate, [url,date], nlu_intent_confidence
 

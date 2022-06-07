@@ -15,9 +15,6 @@ import time
 
 
 
-
-# TODO: ricreare app slack coi permessi giusti e mettere informazioni confidenziali nell'env 
-
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
 load_dotenv('src/.env')
@@ -78,7 +75,7 @@ def handle_request(payload):
         # we stop the cat-gress
         progress.do_run = False
         if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
-            cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%d/%m/%Y"), entities[0], user.get('id'))
+            cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user.get('id'))
         # post the answer message in chat
         slack_web_client.chat_postMessage(**response)
         return {"message":"true"}
