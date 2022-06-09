@@ -21,21 +21,21 @@
             "acronym":"PDE",
             "name":"Prima-donnas Effect",
             "description":"A team of people is unwilling to respect external changes from other team members due to inefficiently structured collaboration within a community.",
-            "emoji":"",
+            "emoji":":sparkler::crown::gem:",
             "strategies": []
         },
         {
             "acronym":"SV",
             "name":"Sharing Villainy",
             "description":"Cause of a lack of information exchange activities, team members share essential knowledge such as outdated, wrong and unconfirmed information.",
-            "emoji":"",
+            "emoji":":information_desk_person::speech_balloon::x::no_good:",
             "strategies": []
         },
         {
             "acronym":"OS",
             "name":"Organizational Skirmish",
             "description":"A misalignment between different expertise levels of individuals involved in the project leads to dropped productivity and affects the project's timeline and cost.",
-            "emoji":"",
+            "emoji":":grinning::speech_balloon::worried::question:",
             "strategies":[    
                 {"strategy":"Create communication plan", "stars":":star::star::star:"}, 
                 {"strategy":"Restructure the community", "stars":":star::star:"},
@@ -49,7 +49,7 @@
             "acronym":"SD",
             "name":"Solution Defiance",
             "description":"The development community presents different levels of cultural and experience background, leading to the division of the community into similar subgroups with completely conflicting opinions.",
-            "emoji":"",
+            "emoji":":busts_in_silhouette::zap::busts_in_silhouette::zap::busts_in_silhouette:",
             "strategies": []
         },
         {
