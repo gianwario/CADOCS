@@ -21,7 +21,7 @@ def build_cs_message(smells, channel, user, entities):
             "type": "section",
             "text": {
                 "type": "plain_text",
-                "text": "This is the community smells we were able to detect in the repository "+entities[0]+" :",
+                "text": "These are the community smells we were able to detect in the repository "+entities[0]+":",
                 "emoji": True
             }
         }
@@ -179,7 +179,7 @@ def build_info_message(channel, user):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "If you want to learn more about *community smells*, you can visit the following link:\n https://boh \n Also, feel free to get in touch with us to have a discussion about the subject! "
+				"text": "If you want to remain up-to-date, please follow us on our social networks:\n  \n Also, feel free to get in touch with us to have a discussion about the subject by sending us an email at slambiase@unisa.it!"
 			}
 		})
     return {

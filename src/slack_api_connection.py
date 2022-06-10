@@ -2,9 +2,8 @@ import os
 import logging
 import requests
 import json
-import json
 import threading
-from flask import Flask, request, jsonify, json, make_response
+from flask import Flask, request, json, make_response
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 from cadocs import Cadocs
