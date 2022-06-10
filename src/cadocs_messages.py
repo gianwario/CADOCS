@@ -186,3 +186,20 @@ def build_info_message(channel, user):
         "channel": channel,
         "blocks": blocks
     }
+
+
+
+
+def build_error_message(channel, user):
+    return {
+        "channel":channel,
+        "blocks":[
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Hi "+user+", I'm sorry but I did not understand your intent. Please be more specific!"
+                }
+		    }
+        ]
+    }

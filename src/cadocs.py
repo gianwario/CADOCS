@@ -1,5 +1,6 @@
 from intent_manager import IntentManager
 from intent_resolver import IntentResolver
+from cadocs_messages import build_error_message
 from utils import CadocsIntents
 import json
 from os import path
@@ -56,7 +57,8 @@ class Cadocs:
             self.conversation_queue.append(exec_data)
             # build the text of the message based on the results
             return response, results, entities, intent
-
+        elif confidence < float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
+            return build_error_message(channel, user.get('profile').get('first_name')), None, None, None
 
 
     # this method build a message that will ask the user if
@@ -133,7 +135,6 @@ class Cadocs:
                 list_obj = json.load(fp)
             except:
                 pass
-            print(list_obj)
             list_obj.append(
             {
                 "user": user,
@@ -160,7 +161,6 @@ class Cadocs:
         # Read JSON file
         with open(filename) as fp:
             list_obj = json.load(fp)
-        print(list_obj.__len__()-1)
         return list_obj[list_obj.__len__()-1]
     
     def error_message(self, error_type, channel, username):

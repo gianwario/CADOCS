@@ -73,6 +73,17 @@ def handle_request(payload):
         progress.do_run = False
         if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
             cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user.get('id'))
+
+        if os.path.exists('src/attachments/report1.pdf'):
+            with open('src/attachments/report1.pdf' , "rb"):
+                response = slack_web_client.files_upload(
+                    channels=channel,
+                    file='src/attachments/report1.pdf',
+                    title='Report',
+                    filetype='pdf'
+                )
+                print(response)
+
         # post the answer message in chat
         slack_web_client.chat_postMessage(**response)
         return {"message":"true"}
@@ -118,11 +129,23 @@ def handle_action(data):
             progress = post_waiting_message(channel)
             # we run the tool
             response, results, entities, intent = cadocs.new_message(exec_data, channel, user)
-            r = requests.get("http://localhost:5000/update_dataset?message="+exec_data["text"]+"&intent="+intent.value)
-            print(r)
+            req = requests.get("http://localhost:5000/update_dataset?message="+exec_data["text"]+"&intent="+intent.value)
             progress.do_run = False
             if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
                 cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user_id)
+
+
+            if os.path.exists('src/attachments/report1.pdf'):
+                with open('src/attachments/report1.pdf' , "rb"):
+                    response = slack_web_client.files_upload(
+                        channels=channel,
+                        file='src/attachments/report1.pdf',
+                        title='Report',
+                        filetype='pdf'
+                    )
+                    print(response)
+
+
             # update the answer message in chat
             slack_web_client.chat_update(channel=channel, ts=message_ts, blocks=response.get("blocks"))
             return {"message":"true"}

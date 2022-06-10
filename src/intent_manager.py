@@ -10,15 +10,12 @@ class IntentManager:
         # it could also return the list of entities found in the text (repo link, date, etc)
         #
 
-        x = requests.get('http://localhost:5000/predict?message=' + text)
-        results = x.json()
-        print(results)
+        req = requests.get('http://localhost:5000/predict?message=' + text)
+        results = req.json()
         nlu_intent = results.get('intent').get('intent').get('name')
         nlu_intent_confidence = results.get('intent').get('intent').get('confidence')
         url = results.get('entities').get("url")
         date = results.get("entities").get("date")
-        print(url)
-        print(date)
         if nlu_intent == "report":
             return CadocsIntents.Report, [], nlu_intent_confidence
         elif nlu_intent == "info":
