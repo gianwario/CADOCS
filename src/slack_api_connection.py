@@ -59,7 +59,7 @@ def handle_request(payload):
     '''         
     # print(conversation)
     # check wether or not the message has been written by the bot (we dont have to answer)
-    if event.get('bot_id') is None and event.get('user') is not None:
+    if event.get('bot_id') is None and event.get('user') is not None and exec_data.get("text") is not '' and exec_data.get('id') is not None:
         # get the user's name to print it in answer
         req_user = slack_web_client.users_info(user=event.get('user'))
         user = req_user.get('user')
@@ -73,17 +73,8 @@ def handle_request(payload):
         progress.do_run = False
         if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
             cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user.get('id'))
-
-        if os.path.exists('src/attachments/report1.pdf'):
-            with open('src/attachments/report1.pdf' , "rb"):
-                response = slack_web_client.files_upload(
-                    channels=channel,
-                    file='src/attachments/report1.pdf',
-                    title='Report',
-                    filetype='pdf'
-                )
-                print(response)
-
+        if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
+            post_attachments(channel, intent)
         # post the answer message in chat
         slack_web_client.chat_postMessage(**response)
         return {"message":"true"}
@@ -134,18 +125,8 @@ def handle_action(data):
             if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
                 cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user_id)
 
-
-            if os.path.exists('src/attachments/report1.pdf'):
-                with open('src/attachments/report1.pdf' , "rb"):
-                    response = slack_web_client.files_upload(
-                        channels=channel,
-                        file='src/attachments/report1.pdf',
-                        title='Report',
-                        filetype='pdf'
-                    )
-                    print(response)
-
-
+            if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
+                post_attachments(channel, intent)
             # update the answer message in chat
             slack_web_client.chat_update(channel=channel, ts=message_ts, blocks=response.get("blocks"))
             return {"message":"true"}
@@ -217,6 +198,19 @@ def update_waiting_message(channel, ts):
                 ]
             )
 
-        
+def post_attachments(channel, intent):
+    files = ["commitCentrality_0.pdf", "Issues_0.pdf", "issuesAndPRsCentrality_0.pdf", "PRs_0.pdf"]
+    for f in files:
+        if os.path.exists('src/attachments/'+f):
+            with open('src/attachments/'+f , "rb"):
+                response = slack_web_client.files_upload(
+                        channels=channel,
+                        file='src/attachments/'+f,
+                        title=f,
+                        filetype='pdf'
+                )
+                print(response)
+
+
 if __name__ == "__main__":
     app.run(port=5002, threaded=True)

@@ -11,8 +11,12 @@ class CsDetectorTool(Tool):
         req = requests.get('http://localhost:5001/getSmells?repo='+data[0]+'&pat='+os.environ.get('GIT_PAT',"")+'&user='+data[data.__len__()-1]+"&graphs=True")
         print(req.json())
         file_names = req.json().get("files")
-        file_req = requests.get("http://localhost:5001/uploads/"+file_names[0], allow_redirects=True)
-        open('src/attachments/report1.pdf', 'wb').write(file_req.content)
+        print(file_names)
+        if len(file_names) > 0:
+            for fn in file_names:
+                file_req = requests.get("http://localhost:5001/uploads/"+fn, allow_redirects=True)
+                els = str(fn).split("\\")
+                open('src/attachments/'+els[len(els)-1], 'wb').write(file_req.content)
         results = req.json().get("result")[1:]
         return results
 
