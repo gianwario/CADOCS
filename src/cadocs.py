@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from utils import valid_link, valid_date
 load_dotenv('src/.env')
 
+# the Cadocs class contains the logic behind the tool's execution
 class Cadocs:
 
     def __init__(self):
@@ -18,6 +19,7 @@ class Cadocs:
         self.conversation_queue = []
         return
 
+    # whenever a message is posted in slack, Cadocs gets a notification through the new_message method
     def new_message(self, exec_data, channel, user):
         print(exec_data)
         text = exec_data["text"]
@@ -25,6 +27,7 @@ class Cadocs:
         manager = IntentManager()
         # detect the intent
         intent, entities, confidence = manager.detect_intent(text)
+        # checking whether or not the entities are valid
         if intent == CadocsIntents.GetSmells:
             if not valid_link(entities[0]):
                 return self.error_message("url", channel, user.get('profile').get('first_name'))
@@ -35,33 +38,35 @@ class Cadocs:
                 return self.error_message("date", channel, user.get('profile').get('first_name'))
             elif not valid_link(entities[0]) and not valid_date(entities[1]):
                 return self.error_message("date_url", channel, user.get('profile').get('first_name'))
+        # checking if the message has enough confidence to be executed directly (otherwise active learning mechanism will start)
         if not exec_data["approved"] and confidence < float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) and confidence >= float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
             self.conversation_queue.append(exec_data)
             return self.ask_confirm(intent, channel, user.get('id')), None, None, None
+        # if the message can be processed directly
         elif (confidence >= float(os.environ.get('ACTIVE_LEARNING_THRESHOLD',"0.77")) or exec_data["approved"]):
-            # instantiate the resolver
+            # we instantiate the resolver of the intents
             resolver = IntentResolver()
-            # tell the resolver which intent it has to fire
             entities.append(user["id"])
+            # tell the resolver which intent it has to fire
             results = resolver.resolve_intent(intent, entities)
-            # ask a function to create a slack message
+            # if the intent is report, we have to use previously existing info instead of computed ones
             if(intent == CadocsIntents.Report):
                 last_ex = self.get_last_execution(user.get('id'))
                 results = last_ex.get('results')
                 entities = [last_ex.get('repo'), last_ex.get('date'), last_ex.get('exec_type')]
-
+            # ask a function to create a slack message
             response = resolver.build_message(results, user, channel, intent, entities)
-            if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
-                self.last_repo = ""
             exec_data.update({"executed" : True})
+            # we update the conversation history 
             self.conversation_queue.append(exec_data)
             # build the text of the message based on the results
             return response, results, entities, intent
+        # if the confidence is too low, an error message will be displayed
         elif confidence < float(os.environ.get('MINIMUM_CONFIDENCE',"0.55")):
             return build_error_message(channel, user.get('profile').get('first_name')), None, None, None
 
 
-    # this method build a message that will ask the user if
+    # this method builds a message that will ask the user if
     # the intent was correctly predicted
     # this information will be used to retrain the model
     def ask_confirm(self, intent, channel, user):
@@ -151,6 +156,7 @@ class Cadocs:
         # Read JSON file
 
 
+    # this method will retrieve the last execution of the current user in order to display it
     def get_last_execution(self, user):
         filename = f'src/executions/executions_{user}.json'
         list_obj = []
@@ -163,6 +169,7 @@ class Cadocs:
             list_obj = json.load(fp)
         return list_obj[list_obj.__len__()-1]
     
+    # error message building for bad requests (messages shown before even executing the tool)
     def error_message(self, error_type, channel, username):
         txt = ""
         if(error_type == "url"):

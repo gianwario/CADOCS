@@ -4,7 +4,7 @@ import json
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
 # TODO: include DATE param
 def build_cs_message(smells, channel, user, entities):
-    # block of the message
+    # blocks that will be displayed in slack
     blocks = []
     blocks.append(
         {
@@ -46,6 +46,7 @@ def build_cs_message(smells, channel, user, entities):
             )
             strategies = smell_data[0].get("strategies")
 
+            #appending strategies if existing
             if(len(strategies) > 0):
                 
                 blocks.append({
@@ -84,7 +85,9 @@ def build_cs_message(smells, channel, user, entities):
         "blocks": blocks
     }
 
+#building the message for the Report intent
 def build_report_message(channel, exec_type, results, user, entities):
+    # blocks that will be displayed in slack
     blocks = []
     blocks.append(
         {
@@ -120,6 +123,7 @@ def build_report_message(channel, exec_type, results, user, entities):
     smells = ""
     for r in results:
         smells = smells + r + "\n"
+    #appending detected smells in the last execution
     blocks.append({
 			"type": "section",
 			"fields": [
@@ -139,6 +143,7 @@ def build_report_message(channel, exec_type, results, user, entities):
         "blocks": blocks
     }
 
+#building the message containing basic information about community smells
 def build_info_message(channel, user):
     blocks = []
     blocks.append({

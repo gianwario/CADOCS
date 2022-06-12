@@ -11,12 +11,12 @@ from datetime import date
 from utils import CadocsIntents
 from dotenv import load_dotenv
 import time
+load_dotenv('src/.env')
 
 
 
 # Initialize a Flask app to host the events adapter
 app = Flask(__name__)
-load_dotenv('src/.env')
 # Create an events adapter and register it to an endpoint in the slack app for event ingestion.
 slack_events_adapter = SlackEventAdapter(os.environ.get('SLACK_EVENT_TOKEN',""), "/slack/events", app)
 # Create a slack client
@@ -29,12 +29,13 @@ cadocs = Cadocs()
 # This event will fire up every time there is a new message on a chat with the bot invited
 @slack_events_adapter.on("message")
 def answer(payload):
-    # starting a new thread for doing the actual processing    
+    # starting a new thread to do the actual processing    
     execution = threading.Thread(
             target=handle_request,
             args=(payload,)
         )
     execution.start()
+    # we send an ACK to slack 
     response = make_response("", 200)
     response.headers['X-Slack-No-Retry'] = 1
     return response
@@ -50,35 +51,32 @@ def handle_request(payload):
         "text" : event.get("text"),
         "executed" : False,
         "approved" : False
-    }
-    
-    '''
-    for e in cadocs.conversation_queue:
-        if e["id"] == exec_data["id"] and e["executed"]:
-            return {"message":"true"}
-    '''         
+    }    
     # print(conversation)
-    # check wether or not the message has been written by the bot (we dont have to answer)
+    # check wether or not the message has been written by the bot (we dont have to answer) or if the message is valid
     if event.get('bot_id') is None and event.get('user') is not None and exec_data.get("text") is not '' and exec_data.get('id') is not None:
         # get the user's name to print it in answer
         req_user = slack_web_client.users_info(user=event.get('user'))
         user = req_user.get('user')
         # Get the channel used by the writer in order to write back in it
         channel = event.get('channel')
-        # we start the progress
+        # we start the cat-gress
         progress = post_waiting_message(channel)
         # ask the chatbot for an answer
         response, results, entities, intent = cadocs.new_message(exec_data, channel, user)
         # we stop the cat-gress
         progress.do_run = False
+        # we check if the intent was to execute csdetector in order to save the the results for a future report
         if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
             cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user.get('id'))
-        if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
+            # we post the attachments (pdf files) to slack
             post_attachments(channel, intent)
+            
         # post the answer message in chat
         slack_web_client.chat_postMessage(**response)
         return {"message":"true"}
 
+# this endpoint is used to handle interactive buttons in the ask for confirm flow
 @app.route("/slack/action-received", methods=["POST"])
 def action_received():
     data = json.loads(request.form["payload"])
@@ -88,6 +86,7 @@ def action_received():
             args=(data,)
         )
     x.start()
+    # we remove the buttons from the message so that the user can't ask for an execution more than once
     blocks = [{
                 "type": "section",
                 "text": {
@@ -97,6 +96,7 @@ def action_received():
                 }
 		    }]
     slack_web_client.chat_update(channel=data.get("channel").get("id"), ts=data.get("message").get("ts"), blocks=blocks)
+    # send an ACK to slack
     response = make_response("", 200)
     response.headers['X-Slack-No-Retry'] = 1
     return response
@@ -117,15 +117,18 @@ def handle_action(data):
             users_execs = [x for x in cadocs.conversation_queue if x["user"] == user_id]
             exec_data = users_execs[len(users_execs)-1]
             exec_data.update({"approved" : True})
+            # we start the cat-gress
             progress = post_waiting_message(channel)
             # we run the tool
             response, results, entities, intent = cadocs.new_message(exec_data, channel, user)
+            # since we are sure the message had the right intent, we update the dataset of the NLU in order to be retrained
             req = requests.get("http://localhost:5000/update_dataset?message="+exec_data["text"]+"&intent="+intent.value)
+            # we stop the cat-gress
             progress.do_run = False
+            # we save the execution if the intent was to run csdetector
             if((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
                 cadocs.save_execution(results, "Community Smell Detection", date.today().strftime("%m/%d/%Y"), entities[0], user_id)
-
-            if(intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate):
+                # we post the pdf attachments
                 post_attachments(channel, intent)
             # update the answer message in chat
             slack_web_client.chat_update(channel=channel, ts=message_ts, blocks=response.get("blocks"))
@@ -198,6 +201,7 @@ def update_waiting_message(channel, ts):
                 ]
             )
 
+# this method will post the file attachments built by csdetector in the slack chat 
 def post_attachments(channel, intent):
     files = ["commitCentrality_0.pdf", "Issues_0.pdf", "issuesAndPRsCentrality_0.pdf", "PRs_0.pdf"]
     for f in files:
@@ -211,6 +215,36 @@ def post_attachments(channel, intent):
                 )
                 print(response)
 
+# forward to the real csDetector execution
+@app.route('/csDetector/get_smells', methods=['GET'])
+def get_smells():
+    if 'repo' in request.args:
+        repo = str(request.args['repo'])
+    else:
+        return "Error: No repo field provided. Please specify a repo.", 400
+
+    if 'pat' in request.args:
+        pat = str(request.args['pat'])
+    else:
+        return "Error: No pat field provided. Please specify a pat.", 400
+    if 'user' in request.args:
+        user = str(request.args['user'])
+    else:
+        user = "default" 
+    req = requests.get(os.environ.get('CSDETECTOR_URL')+'getSmells?repo='+repo+'&pat='+pat+'&user='+user+'&graphs=True')
+    results = req.json()
+    return results
+
+# forward to the real NLU model
+@app.route('/cadocsNLU/predict', methods=['GET'])
+def predict():
+    if 'message' in request.args:
+        message = str(request.args['message'])
+    else:
+        return "Error: No message to provide to the model. Please insert a valid message."
+    req = requests.get(os.environ.get('CADOCSNLU_URL')+'predict?message='+message)
+    results = req.json()
+    return results
 
 if __name__ == "__main__":
     app.run(port=5002, threaded=True)
