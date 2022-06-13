@@ -1,5 +1,8 @@
 from utils import CadocsIntents
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv('src/.env')
 
 # the Intent Manager is used to detect the Intent behind an user's message
 class IntentManager:
@@ -7,7 +10,7 @@ class IntentManager:
         # intent detection from our nlp model
         # it will return a text that will be transformed into the correspondent enum
         # it could also return the list of entities found in the text (repo link, date, etc)
-        req = requests.get('http://localhost:5000/predict?message=' + text)
+        req = requests.get(os.environ.get('CADOCSNLU_URL_PREDICT')+'?message=' + text)
         results = req.json()
         # we retrieve both the intent and the confidence of the prediction
         nlu_intent = results.get('intent').get('intent').get('name')

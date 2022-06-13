@@ -2,7 +2,6 @@ import json
 
 
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
-# TODO: include DATE param
 def build_cs_message(smells, channel, user, entities):
     # blocks that will be displayed in slack
     blocks = []
@@ -16,12 +15,16 @@ def build_cs_message(smells, channel, user, entities):
             }
         }
     )
+    if len(entities) > 2:
+        text = "These are the community smells we were able to detect in the repository "+entities[0]+" starting from "+entities[1]+":"
+    else:
+        text = "These are the community smells we were able to detect in the repository "+entities[0]+":"
     blocks.append(
         {
             "type": "section",
             "text": {
                 "type": "plain_text",
-                "text": "These are the community smells we were able to detect in the repository "+entities[0]+":",
+                "text": text,
                 "emoji": True
             }
         }
@@ -158,7 +161,7 @@ def build_info_message(channel, user):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "Since *community smells* are a recent introduction in the Software Engineering, i can only detect the following ten:"
+				"text": "These are the *community smells* I can detect in your development communities:"
 			}
 		})
     blocks.append({
@@ -184,7 +187,7 @@ def build_info_message(channel, user):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "If you want to remain up-to-date, please follow us on our social networks:\n  \n Also, feel free to get in touch with us to have a discussion about the subject by sending us an email at slambiase@unisa.it!"
+				"text": "If you want to remain up-to-date, please follow us on our social networks:\n -Instagram: <https://www.instagram.com/sesa_lab/|sesa_lab> \t -Twitter: <https://twitter.com/sesa_lab|@SeSa_Lab> \t -Website: <https://sesalabunisa.github.io/en/index.html|sesalabunisa.github.io> \n Also, feel free to get in touch with us to have a discussion about the subject by sending us an email at slambiase@unisa.it!"
 			}
 		})
     return {

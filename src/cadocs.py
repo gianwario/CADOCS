@@ -189,3 +189,13 @@ class Cadocs:
 			}
 		}]}, None, None, None
     
+    def something_wrong(self, channel):
+        return {"channel":channel, "blocks":[{
+			"type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": "Something went wrong with your request. Please try again",
+				"emoji": True
+			}
+		}]}
+    
