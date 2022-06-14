@@ -220,7 +220,6 @@ def post_attachments(channel, intent):
 # forward to the real csDetector execution
 @app.route('/csDetector/getSmells', methods=['GET'])
 def get_smells():
-    print("getsmells")
     if 'repo' in request.args:
         repo = str(request.args['repo'])
     else:
@@ -243,23 +242,20 @@ def get_smells():
     else:
         date = None
     if date is not None:
-        req = requests.get('http://localhost:5001/getSmells?repo='+repo+'&pat='+pat+'&user='+user+'&graphs'+str(needed_graphs)+'&date='+date)
+        req = requests.get('http://localhost:5001/getSmells?repo='+repo+'&pat='+pat+'&user='+user+'&graphs='+str(needed_graphs)+'&date='+date)
     else:
-        req = requests.get('http://localhost:5001/getSmells?repo='+repo+'&pat='+pat+'&user='+user+'&graphs'+str(needed_graphs))
+        req = requests.get('http://localhost:5001/getSmells?repo='+repo+'&pat='+pat+'&user='+user+'&graphs='+str(needed_graphs))
    
     resp = req.json()
     return resp
 
 @app.route('/csDetector/uploads/<path:filename>')
 def download_file(filename):
-    print("upload")
-    return requests.get('http://localhost:5001/uploads/'+fn, allow_redirects=True)
+    return requests.get('http://localhost:5001/uploads/'+filename, allow_redirects=True).content
 
 # forward to the real NLU model
 @app.route('/cadocsNLU/predict', methods=['GET'])
 def predict():
-    print("predict")
-
     if 'message' in request.args:
         message = str(request.args['message'])
     else:

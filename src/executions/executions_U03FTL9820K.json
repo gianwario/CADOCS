@@ -524,5 +524,125 @@
             "SD",
             "UI"
         ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/TeamCloud",
+        "results": [
+            "PDE",
+            "SV",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/TeamCloud",
+        "results": [
+            "PDE",
+            "SV",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/TeamCloud",
+        "results": [
+            "PDE",
+            "SV",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/TeamCloud",
+        "results": [
+            "PDE",
+            "SV",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/TeamCloud",
+        "results": [
+            "PDE",
+            "SV",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "SV",
+            "OS",
+            "SD",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/QuantumKatas",
+        "results": [
+            "OSE",
+            "BCE",
+            "SV",
+            "SD",
+            "RS",
+            "TF",
+            "TC"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/tensorflow/ranking",
+        "results": [
+            "BCE",
+            "SV",
+            "UI"
+        ]
+    },
+    {
+        "user": "U03FTL9820K",
+        "exec_type": "Community Smell Detection",
+        "date": "06/14/2022",
+        "repo": "https://github.com/microsoft/QuantumKatas",
+        "results": [
+            "OSE",
+            "BCE",
+            "SV",
+            "SD",
+            "RS",
+            "TF",
+            "TC"
+        ]
     }
 ]

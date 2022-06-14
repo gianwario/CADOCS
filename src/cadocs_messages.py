@@ -3,6 +3,7 @@ import json
 
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
 def build_cs_message(smells, channel, user, entities):
+    print(smells, entities)
     # blocks that will be displayed in slack
     blocks = []
     blocks.append(

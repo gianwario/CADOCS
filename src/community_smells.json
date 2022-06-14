@@ -67,7 +67,7 @@
             ]
         },
         {
-            "acronym":"TFS",
+            "acronym":"TF",
             "name":"Truck Factor Smell",
             "description":"Risk of significant knowledge loss due to the turnover of developers resulting from the fact that project information and knowledge are concentrated in a minority of the developers.",
             "emoji":":truck::running::running:",
