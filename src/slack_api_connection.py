@@ -133,7 +133,7 @@ def handle_action(data):
                 # we stop the cat-gress
                 progress.do_run = False
             # since we are sure the message had the right intent, we update the dataset of the NLU in order to be retrained
-            req = requests.get("http://localhost:5000/update_dataset?message="+exec_data["text"]+"&intent="+intent.value)
+            req = requests.get(os.environ.get('CADOCSNLU_URL_UPDATE',"")+"?message="+exec_data["text"]+"&intent="+intent.value)
             # update the answer message in chat
             slack_web_client.chat_postMessage(**response)
             # we save the execution if the intent was to run csdetector
@@ -263,6 +263,21 @@ def predict():
     req = requests.get('http://localhost:5000/predict?message='+message)
     resp = req.json()
     return resp
+
+# forward for the active learning process
+@app.route('/cadocsNLU/predict', methods=['GET'])
+def update_dataset():
+    if 'message' in request.args and 'intent' in request.args:
+        message = str(request.args['message'])
+        intent = str(request.args['intent'])
+    else:
+        return "Error: The past message or intent is incorrect. Please provide the right parameters."
+
+    req = requests.get("http://localhost:5000/update_dataset?message="+message+"&intent="+intent)
+    resp = req.json()
+
+    return resp
+
 
 if __name__ == "__main__":
     app.run(port=5002, threaded=True)
