@@ -43,6 +43,8 @@ def answer(payload):
 def handle_request(payload):  
     # Get the onboarding message payload
     event = payload.get("event", {})
+    print(event)
+    print(slack_web_client.auth_test())
     # print(json.dumps(payload, indent=4, sort_keys=True))
     exec_data = {
         "id" : event.get("client_msg_id"),
@@ -265,7 +267,7 @@ def predict():
     return resp
 
 # forward for the active learning process
-@app.route('/cadocsNLU/predict', methods=['GET'])
+@app.route('/cadocsNLU/update', methods=['GET'])
 def update_dataset():
     if 'message' in request.args and 'intent' in request.args:
         message = str(request.args['message'])
@@ -277,6 +279,13 @@ def update_dataset():
     resp = req.json()
 
     return resp
+
+@app.route('/')
+def welcome():
+    code = request.args["code"]
+    resp = slack_web_client.oauth_v2_access(code=code, client_id="3537687436610.3523126127575", client_secret="3c016711fffce7b93e97c960d8a5f44c")
+    print(resp)
+    return "Hello, I'm CADOCS"
 
 
 if __name__ == "__main__":
