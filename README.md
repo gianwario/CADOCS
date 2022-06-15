@@ -1,3 +1,4 @@
+[![Created Badge](https://badges.pufler.dev/created/gianwario/CADOCS)](https://badges.pufler.dev)
 [![Visits Badge](https://badges.pufler.dev/visits/gianwario/CADOCS)](https://badges.pufler.dev)
 
 <p align = "center">
@@ -26,8 +27,8 @@ The main elements of the repository are described below:
 
 The entire CADOCS tool is composed of three modules:
 - **CADOCS** (this repository): it is the Slack App used to interact with users.
-- **CADOCS_NLU_Model** (link): it is the ML service used to interpret the users' intents.
-- **csDetector** (link): the augmented and wrapped version of csDetector, used in our tool to detect community smells and other socio-technical metrics.
+- **CADOCS_NLU_Model** [link](https://github.com/vipenti/CADOCS_NLU_Model): it is the ML service used to interpret the users' intents.
+- **csDetector** [link](https://github.com/gianwario/csDetector): the augmented and wrapped version of csDetector, used in our tool to detect community smells and other socio-technical metrics.
 
 <!--
 ## Authors
@@ -99,9 +100,7 @@ In the following list you will find the step needed to make the current module--
 
 ## Contributors
 
-<a href="https://github.com/gianwario/CADOCS/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=gianwario/CADOCS" />
-</a>
+[![Contributors Display](https://badges.pufler.dev/contributors/gianwario/CADOCS?size=75&padding=5&bots=true)](https://badges.pufler.dev)
 
 <!--
 ## References
