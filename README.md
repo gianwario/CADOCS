@@ -47,7 +47,7 @@ List of authors:
 ## How to Install the Tool Locally
 
 There are several ways to install the tool. We discuss them individually below.
-
+<!--
 ### Case 1: Integration in Slack (*Recommended*)
 
 You can integrate our conversational agent directly into your Slack workflow following the steps listed below.
@@ -59,11 +59,14 @@ Since it will use our own hosted services, you won't need to install any of the 
 
 #### Installation Steps
 
-- Log into your workspace and add our CADOCS app;
-- (Optional) Invite CADOCS in one of your channels if you don't want to use it through the app's channel;
+- Log into your workspace and add our CADOCS app:
+<a href="https://slack.com/oauth/v2/authorize?client_id=3537687436610.3523126127575&scope=channels:history,channels:read,chat:write,files:write,im:history,im:read,im:write,users:read&user_scope="><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+- (Optional) Invite CADOCS in one of your channels if you don't want to use it through the app's channel
 - You are done! 
 
-### Case 2: Slack App Installation
+-->
+
+### Case 1: Slack App Installation (*Recommended*)
 
 Since we made each of the modules needed by CADOCS available on the web, you can install only the current project to run the tool.
 
@@ -141,7 +144,7 @@ In case you faced some error installing the Anaconda environment, please proceed
   - Invite your App in your workspace
   - Follow the instructions in the demo video to use CADOCS!
 
-### Case 3: Full Local Installation
+### Case 2: Full Local Installation
 
 This case is a the trickiest one. Since CADOCS is based on three different modules, you will have to install by hand the three environments needed to execute each module. 
 
