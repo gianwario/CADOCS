@@ -103,13 +103,14 @@ In case you faced some error installing the Anaconda environment, please proceed
   - Go to the following URL https://api.slack.com/
   - Follow the instruction to create a new app
   - Within the app, make sure you give the following __Bot Token Scopes__:
-    - channels:history, channels:read, channels:write
+    - channels:history, channels:read
     - chat:write
     - files:write
     - im:history, im:write, im:read
     - users:read
+  - Install the app in your workspace
   - In the __Event Subscription__ section, toggle ON the __Enable Events__ button and, in the __Subscribe to bot events__ section, add:
-    - message.channel
+    - message.channels
     - message.im
   - In the __Interactivity & Shortcuts__ section, toggle ON the __Interactivity__ button
 
@@ -126,7 +127,7 @@ In case you faced some error installing the Anaconda environment, please proceed
   
   ```
     SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
-    SLACK_EVENT_TOKEN = The Client Secret that you will find in the Basic Information section within the app you created in the Step 2
+    SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
     GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub settings
     ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
     MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
@@ -135,18 +136,19 @@ In case you faced some error installing the Anaconda environment, please proceed
     CSDETECTOR_URL_GETSMELLS = https://sesacadocs.eu.ngrok.io/csDetector/getSmells
     CSDETECTOR_URL_UPLOADS = https://sesacadocs.eu.ngrok.io/csDetector/uploads/
   ```
-  - Activate the python environment created in the Step 1 and run the module *slack_api_connection.py*
+  - Within your IDE (or through command line if you feel more comfortable), make sure that the environment used to execute the tool is the one you created in the Step 1 
+  - With the environment activated, run the module *slack_api_connection.py*
 
 - Step 5: Put it all together
   - Within the Slack App created in the Step 2, insert the following URLs:
     - In the __Event Subscription__ section, insert as the request URL: YOUR_NGROK_URL/slack/events
     - In the __Interactivity & Shortcuts__ section, insert as the request URL: YOUR_NGROK_URL/slack/action-received
-  - Invite your App in your workspace
+  - Reinstall the app in your workspace
   - Follow the instructions in the demo video to use CADOCS!
 
 ### Case 2: Full Local Installation
 
-This case is a the trickiest one. Since CADOCS is based on three different modules, you will have to install by hand the three environments needed to execute each module. 
+This case is the trickiest one. Since CADOCS is based on three different modules, you will have to install by hand the three environments needed to execute each module. 
 
 After having installed each of them, you will have to create your own Slack App like the previous case.
 
@@ -168,7 +170,7 @@ This section will explain how to put together the three modules in order to make
   
   ```
     SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
-    SLACK_EVENT_TOKEN = The Client Secret that you will find in the Basic Information section within the app you created in the Step 2
+    SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
     GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub settings
     ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
     MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
@@ -177,7 +179,8 @@ This section will explain how to put together the three modules in order to make
     CSDETECTOR_URL_GETSMELLS = YOUR_NGROK_URL/csDetector/getSmells
     CSDETECTOR_URL_UPLOADS = YOUR_NGROK_URL/csDetector/uploads/
   ```
-  - Activate the python environment created for the CADOCS project and run the module *slack_api_connection.py*
+  - Within your IDE (or through command line if you feel more comfortable), make sure that the environment used to execute the tool is the one you created in the Step 1 
+  - With the environment activated, run the module *slack_api_connection.py*
 
 - Step 3: Execution of the helper modules
   - Execute the NLU web service (please refer to the CADOCS_NLU project)
@@ -187,7 +190,7 @@ This section will explain how to put together the three modules in order to make
   - Within the Slack App created in the Step 2, insert the following URLs:
     - In the __Event Subscription__ section, insert as the request URL: YOUR_NGROK_URL/slack/events
     - In the __Interactivity & Shortcuts__ section, insert as the request URL: YOUR_NGROK_URL/slack/action-received
-  - Invite your App in your workspace
+  - Reinstall the app in your workspace
   - Follow the instructions in the demo video to use CADOCS!
 
 ## Contributors
