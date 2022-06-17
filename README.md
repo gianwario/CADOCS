@@ -44,7 +44,7 @@ List of authors:
 - **Filomena Ferrucci** — *fferrucci@unisa.it* — Software Engineering (SeSa) Lab, Department of Computer Science - University of Salerno, Salerno, Italy
 -->
 
-## How to Install the Tool Locally
+## How to Install CADOCS: Conversational Agent Locally
 
 There are several ways to install the tool. We discuss them individually below.
 <!--
