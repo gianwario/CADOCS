@@ -102,17 +102,13 @@ In case you faced some error installing the Anaconda environment, please proceed
 - Step 2: Creation of a new Slack App
   - Go to the following URL https://api.slack.com/
   - Follow the instruction to create a new app
-  - Within the app, make sure you give the following __Bot Token Scopes__:
+  - Within the __OAuth & Permissions__ section, make sure you give the following __Bot Token Scopes__:
     - channels:history, channels:read
     - chat:write
     - files:write
     - im:history, im:write, im:read
     - users:read
   - Install the app in your workspace
-  - In the __Event Subscription__ section, toggle ON the __Enable Events__ button and, in the __Subscribe to bot events__ section, add:
-    - message.channels
-    - message.im
-  - In the __Interactivity & Shortcuts__ section, toggle ON the __Interactivity__ button
 
 - Step 3: Setting up the web service
   - Install ngrok on your system
@@ -128,7 +124,7 @@ In case you faced some error installing the Anaconda environment, please proceed
   ```
     SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
     SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
-    GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub settings
+    GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub account settings (make sure you give at least the "Repo" permissions)
     ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
     MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
     CADOCSNLU_URL_PREDICT = https://sesacadocs.eu.ngrok.io/cadocsNLU/predict
@@ -140,7 +136,12 @@ In case you faced some error installing the Anaconda environment, please proceed
   - With the environment activated, run the module *slack_api_connection.py*
 
 - Step 5: Put it all together
-  - Within the Slack App created in the Step 2, insert the following URLs:
+  - Open the Slack app you created in the Step 2 
+  - In the __Event Subscription__ section, toggle ON the __Enable Events__ button and, in the __Subscribe to bot events__ section, add:
+    - message.channels
+    - message.im
+  - In the __Interactivity & Shortcuts__ section, toggle ON the __Interactivity__ button
+  - Insert the following URLs:
     - In the __Event Subscription__ section, insert as the request URL: YOUR_NGROK_URL/slack/events
     - In the __Interactivity & Shortcuts__ section, insert as the request URL: YOUR_NGROK_URL/slack/action-received
   - Reinstall the app in your workspace
@@ -187,7 +188,12 @@ This section will explain how to put together the three modules in order to make
   - Execute the csDetector web service (please refer to the csDetector project)
 
 - Step 4: Put it all together
-  - Within the Slack App created in the Step 2, insert the following URLs:
+  - Open the Slack app you created previously
+  - In the __Event Subscription__ section, toggle ON the __Enable Events__ button and, in the __Subscribe to bot events__ section, add:
+    - message.channels
+    - message.im
+  - In the __Interactivity & Shortcuts__ section, toggle ON the __Interactivity__ button
+  - Insert the following URLs:
     - In the __Event Subscription__ section, insert as the request URL: YOUR_NGROK_URL/slack/events
     - In the __Interactivity & Shortcuts__ section, insert as the request URL: YOUR_NGROK_URL/slack/action-received
   - Reinstall the app in your workspace
