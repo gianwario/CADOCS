@@ -21,8 +21,7 @@ Demo of the tool: <br/><br/>
 The main elements of the repository are described below:
 
 - src: it contains the source code of the conversational agent;
-- resources: divided as follow:
-  - surveys: 
+- resources: it contains the survey created to build the dataset for the NLU model
 
 ## Other Tools
 
