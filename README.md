@@ -13,7 +13,7 @@
 
 Specifically, this is the principal repository of the system and contains the code for the client part that directly interacts with the user on the Slack platform.
 
-[video del tool]
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/5EpKtnF8jys/0.jpg)](https://www.youtube.com/watch?v=5EpKtnF8jys)
 
 ## Content of the Repository
 
