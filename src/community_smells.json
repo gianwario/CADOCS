@@ -5,7 +5,14 @@
             "name":"Organizational Silo Effect",
             "description":"Siloed areas of the community that do not communicate, except through one or two of their respective members.",
             "emoji":":busts_in_silhouette::bust_in_silhouette::busts_in_silhouette:",
-            "strategies": []
+            "strategies": [    
+                {"strategy":"Create communication plan", "stars":":star::star::star:"}, 
+                {"strategy":"Restructure the community", "stars":":star::star:"},
+                {"strategy":"Introduce a Social sanctioning mechanism", "stars":":star::star:"},
+                {"strategy":"Mentoring", "stars":":star::star:"},
+                {"strategy":"Cohesion exercising", "stars":":star::star:"},
+                {"strategy":"Monitoring", "stars":":star:"}
+            ]
         },
         {
             "acronym":"BCE",
@@ -36,14 +43,7 @@
             "name":"Organizational Skirmish",
             "description":"A misalignment between different expertise levels of individuals involved in the project leads to dropped productivity and affects the project's timeline and cost.",
             "emoji":":grinning::speech_balloon::worried::question:",
-            "strategies":[    
-                {"strategy":"Create communication plan", "stars":":star::star::star:"}, 
-                {"strategy":"Restructure the community", "stars":":star::star:"},
-                {"strategy":"Introduce a Social sanctioning mechanism", "stars":":star::star:"},
-                {"strategy":"Mentoring", "stars":":star::star:"},
-                {"strategy":"Cohesion exercising", "stars":":star::star:"},
-                {"strategy":"Monitoring", "stars":":star:"}
-            ]
+            "strategies":[]
         },
         {
             "acronym":"SD",
