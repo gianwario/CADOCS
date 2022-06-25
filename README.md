@@ -159,7 +159,7 @@ This section will explain how to put together the three modules in order to make
 #### Requirements
 
 - Having installed the CADOCS_NLU project (further details are available in the project's repository)
-- Having installed the csDetector enhanced project (further details are available in the project's repository)
+- Having installed the csDetector enhanced project (further details are available in the project's repository, please refer to the branch "CR_2-web-service")
 
 #### Installation Steps
 
