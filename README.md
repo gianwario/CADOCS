@@ -20,8 +20,9 @@ Demo of the tool: <br/><br/>
 
 The main elements of the repository are described below:
 
-- src: it contains the source code of the conversational agent;
+- src: it contains the source code of the conversational agent
 - resources: it contains the survey created to build the dataset for the NLU model
+- cadocs_chatbot_env.yaml: The Anaconda environment containing the needed dependencies to install CADOCS
 
 ## Other Tools
 
