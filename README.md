@@ -31,6 +31,23 @@ The entire CADOCS tool is composed of three modules:
 - **CADOCS_NLU_Model** [link](https://github.com/vipenti/CADOCS_NLU_Model): it is the ML service used to interpret the users' intents.
 - **csDetector** [link](https://github.com/gianwario/csDetector): the augmented and wrapped version of csDetector, used in our tool to detect community smells and other socio-technical metrics.
 
+## Detectable Community Smells
+
+The complete list of detectable community smells—through the use of csDetector—and the associated refactoring strategies.
+
+| Community Smell | Description | Refactoring Strategies |
+|---|---|---|
+| Organizational Silo | Siloed areas of the community that do not communicate, except through one or two of their respective members. | Restructure the community, Create communication plan, Mentoring, Cohesion exercising, Monitoring, and Introducing a social-rewarding mechanism. |
+| Black Cloud | Information overload due to lack of structured communications or cooperation governance. | Create communication plan, Restructure the community, and Introduce a Social sanctioning mechanism. | 
+| Radio Silence | One interposes herself into every formal interaction across more sub-communities with little flexibility to introduce other channels. | Restructure the community, Create communication plan, Mentoring, Cohesion exercising, Monitoring, and Introduce a Social sanctioning mechanism. | 
+| Prima Donnas | A team of people is unwilling to respect external changes from other team members due to inefficiently structured collaboration. | NA | 
+| Sharing Villainy | Cause of a lack of information exchange, team members share essential knowledge such as outdated, wrong and unconfirmed information. | NA | 
+| Organizational Skirmish | A misalignment between different expertise levels of individuals involved in the project leads to dropped productivity and affects the project's timeline and cost. | NA | 
+| Solution Defiance | The development community presents different levels of cultural and experience background, leading to the division of the community into similar subgroups with completely conflicting opinions. | NA | 
+| Truck Factor Smell | Risk of significant knowledge loss due to the turnover of developers resulting from the fact that project information and knowledge are concentrated in a minority of the developers. | NA | 
+| Unhealthy Interaction | Long delays in stakeholder communications cause slow, light and brief conversations and discussions. | NA | 
+| Toxic Communication | Long delays in stakeholder communications cause slow, light and brief conversations and discussions. | NA |
+
 <!--
 ## Authors
 
