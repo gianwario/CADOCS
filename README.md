@@ -13,9 +13,14 @@
 
 Specifically, this is the principal repository of the system and contains the code for the client part that directly interacts with the user on the Slack platform.
 
-Demo of the tool: <br/><br/>
+### Demo of the Tool 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/a2hOoE1M8hk/0.jpg)](https://www.youtube.com/watch?v=a2hOoE1M8hk)
 <br/>
+
+### Installation video
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ffdimm2CvO0/0.jpg)](https://www.youtube.com/watch?v=ffdimm2CvO0)
+<br/>
+
 ## Content of the Repository
 
 The main elements of the repository are described below:
