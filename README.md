@@ -1,6 +1,3 @@
-[![Created Badge](https://badges.pufler.dev/created/gianwario/CADOCS)](https://badges.pufler.dev)
-[![Visits Badge](https://badges.pufler.dev/visits/gianwario/CADOCS)](https://badges.pufler.dev)
-
 <p align = "center">
   <img src = "https://github.com/gianwario/CADOCS/blob/main/cadocs_logo.png?raw=true" width = "400" heigth = "200">
 </p>
@@ -228,7 +225,9 @@ This section will explain how to put together the three modules in order to make
 
 ## Contributors
 
-[![Contributors Display](https://badges.pufler.dev/contributors/gianwario/CADOCS?size=75&padding=5&bots=true)](https://badges.pufler.dev)
+<a href="https://github.com/gianwario/CADOCS/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=gianwario/CADOCS" />
+</a>
 
 <!--
 ## References
