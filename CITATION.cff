@@ -21,7 +21,7 @@ version: 2.0.4
 date-released: 2022-11-15
 url: "https://github.com/gianwario/CADOCS"
 preferred-citation:
-  type: article
+  type: conference-paper
   authors:
   - family-names: "Voria"
     given-names: "Gianmario"
@@ -39,11 +39,11 @@ preferred-citation:
   - family-names: "Ferrucci"
     given-names: "Filomena"
   title: "Community Smell Detection and Refactoring in SLACK: The CADOCS Project"
-  #journal: "Journal Title"
-  conference: "International Conference on Software Maintenance and Evolution 2022"
-  #month: 9
-  #start: 1 # First page number
-  #end: 10 # Last page number
-  #issue: 1
-  #volume: 1
   year: 2022
+  collection-title: "Proceedings of the 38th IEEE International Conference on Software Maintenance and Evolution"
+  conference:
+  - name: 38th IEEE International Conference on Software Maintenance and Evolution
+    location: Limassol, Cyprus
+    #address: 123 Main St
+    city: Limassol
+    region: Cyprus
