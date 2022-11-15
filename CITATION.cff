@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Voria"
+  given-names: "Gianmario"
+- family-names: "Pentangelo"
+  given-names: "Viviana"
+- family-names: "Della Porta"
+  given-names: "Antonio"
+- family-names: "Lambiase"
+  given-names: "Stefano"
+  orcid: "https://orcid.org/0000-0002-9933-6203"
+- family-names: "Catolino"
+  given-names: "Gemma"
+- family-names: "Palomba"
+  given-names: "Fabio"
+- family-names: "Ferrucci"
+  given-names: "Filomena"
+title: "CADOCS"
+version: 2.0.4
+date-released: 2022-11-15
+url: "https://github.com/gianwario/CADOCS"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Voria"
+    given-names: "Gianmario"
+  - family-names: "Pentangelo"
+    given-names: "Viviana"
+  - family-names: "Della Porta"
+    given-names: "Antonio"
+  - family-names: "Lambiase"
+    given-names: "Stefano"
+    orcid: "https://orcid.org/0000-0002-9933-6203"
+  - family-names: "Catolino"
+    given-names: "Gemma"
+  - family-names: "Palomba"
+    given-names: "Fabio"
+  - family-names: "Ferrucci"
+    given-names: "Filomena"
+  title: "Community Smell Detection and Refactoring in SLACK: The CADOCS Project"
+  #journal: "Journal Title"
+  conference: "International Conference on Software Maintenance and Evolution 2022"
+  #month: 9
+  #start: 1 # First page number
+  #end: 10 # Last page number
+  #issue: 1
+  #volume: 1
+  year: 2022
