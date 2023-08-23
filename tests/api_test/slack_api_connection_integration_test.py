@@ -1,6 +1,7 @@
-from src import slack_api_connection, utils, cadocs
+from src import slack_api_connection, cadocs, service
+from service import utils
 from cadocs import Cadocs
-from utils import CadocsIntents
+from service.utils import CadocsIntents
 import pytest
 import requests
 from unittest.mock import Mock, patch

@@ -1,7 +1,7 @@
-from src import intent_manager, intent_resolver, utils, cadocs
+from src import intent_manager, intent_resolver, cadocs, service
 from intent_manager import IntentManager
 from intent_resolver import IntentResolver
-from utils import CadocsIntents
+from service.utils import CadocsIntents
 from cadocs import Cadocs
 from tests.service_test.cadocs_messages_unit_test import TestCadocsMessagesUT
 import requests

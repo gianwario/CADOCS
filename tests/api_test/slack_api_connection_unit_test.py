@@ -1,5 +1,6 @@
-from src import slack_api_connection, utils
-from utils import CadocsIntents
+from src import slack_api_connection, service
+from src.service import utils
+from service.utils import CadocsIntents
 from flask import Flask, make_response
 from slack_api_connection import app, Cadocs
 import json

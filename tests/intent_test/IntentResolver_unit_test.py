@@ -1,6 +1,6 @@
-from src import intent_resolver, utils, tools, tool_selector
+from src import intent_resolver, service, tools, tool_selector
 from intent_resolver import IntentResolver
-from utils import CadocsIntents
+from service.utils import CadocsIntents
 from tool_selector import ToolSelector
 from tools import CsDetectorTool
 from unittest.mock import Mock

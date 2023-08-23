@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from utils import CadocsIntents
+from service.utils import CadocsIntents
 from intent_manager import IntentManager
 import os
 

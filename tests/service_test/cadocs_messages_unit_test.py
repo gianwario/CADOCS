@@ -1,6 +1,6 @@
 import pytest
 import json
-from src import cadocs_messages
+from src.service import cadocs_messages
 
 class TestCadocsMessagesUT:
 
