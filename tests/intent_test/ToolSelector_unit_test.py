@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import Mock
-from src import tool_selector, tools, tool_strategy
+from intent_handling import tool_strategy, tools
+from intent_handling import tool_selector
 
 class TestToolSelectorUT:
 

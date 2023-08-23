@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import patch
-from service.utils import valid_link, valid_date, CadocsIntents
+from intent_handling.cadocs_intents import CadocsIntents
+from service.utils import valid_link, valid_date
 import datetime
 
 

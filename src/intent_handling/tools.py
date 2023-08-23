@@ -1,5 +1,5 @@
 from typing import List
-from tool_strategy import Tool
+from intent_handling.tool_strategy import Tool
 import os
 import requests
 from dotenv import load_dotenv

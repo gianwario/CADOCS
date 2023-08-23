@@ -1,6 +1,6 @@
-from service.utils import CadocsIntents
-from tool_selector import ToolSelector
-from tools import CsDetectorTool
+from intent_handling.cadocs_intents import CadocsIntents
+from intent_handling.tool_selector import ToolSelector
+from intent_handling.tools import CsDetectorTool
 from service import cadocs_messages
 
 # the Intent Resolver is used to handle the execution given a predicted intent

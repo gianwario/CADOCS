@@ -2,7 +2,7 @@ from chatbot import cadocs
 from src import slack_api_connection, service, chatbot
 from service import utils
 from chatbot.cadocs import Cadocs
-from service.utils import CadocsIntents
+from intent_handling.cadocs_intents import CadocsIntents
 import pytest
 import requests
 from unittest.mock import Mock, patch
@@ -75,7 +75,7 @@ class TestSlackAPIConnectionIT:
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
         # Mock os.environ.get method
-        mocker.patch('tools.os.environ.get', side_effect=[
+        mocker.patch('intent_handling.tools.os.environ.get', side_effect=[
             "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77"])
 
         expected_response = {"message": "true"}

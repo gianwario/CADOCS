@@ -1,13 +1,6 @@
-import enum
 import datetime
 import re
 
-
-class CadocsIntents(enum.Enum):
-   GetSmells = "get_smells"
-   GetSmellsDate = "get_smells_date"
-   Report = "report"
-   Info = "info"
 
 def valid_link(url):
    re_equ = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"

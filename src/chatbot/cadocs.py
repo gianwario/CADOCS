@@ -1,7 +1,7 @@
 from chatbot.intent_manager import IntentManager
-from intent_resolver import IntentResolver
+from intent_handling.intent_resolver import IntentResolver
 from service.cadocs_messages import build_error_message
-from service.utils import CadocsIntents
+from intent_handling.cadocs_intents import CadocsIntents
 import json
 from os import path
 import os

@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from service.utils import CadocsIntents
+from intent_handling.cadocs_intents import CadocsIntents
 from chatbot.intent_manager import IntentManager
 import os
 

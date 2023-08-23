@@ -8,7 +8,7 @@ from slack import WebClient
 from slackeventsapi import SlackEventAdapter
 from chatbot.cadocs import Cadocs
 from datetime import date
-from service.utils import CadocsIntents
+from intent_handling.cadocs_intents import CadocsIntents
 from dotenv import load_dotenv
 import time
 load_dotenv('src/.env')

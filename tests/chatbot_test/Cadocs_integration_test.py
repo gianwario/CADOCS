@@ -1,7 +1,8 @@
-from src import intent_resolver, service, chatbot
+from intent_handling import intent_resolver
+from src import service, chatbot
 from chatbot.intent_manager import IntentManager
-from intent_resolver import IntentResolver
-from service.utils import CadocsIntents
+from intent_handling.intent_resolver import IntentResolver
+from intent_handling.cadocs_intents import CadocsIntents
 from chatbot.cadocs import Cadocs
 from tests.service_test.cadocs_messages_unit_test import TestCadocsMessagesUT
 import requests
@@ -58,7 +59,7 @@ class TestCadocsIT:
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
         # Mock os.environ.get method
-        mocker.patch('tools.os.environ.get', side_effect=[
+        mocker.patch('intent_handling.tools.os.environ.get', side_effect=[
             "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77"])
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -112,7 +113,7 @@ class TestCadocsIT:
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
         # Mock os.environ.get method
-        mocker.patch('tools.os.environ.get', side_effect=[
+        mocker.patch('intent_handling.tools.os.environ.get', side_effect=[
             "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77"])
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -189,7 +190,7 @@ class TestCadocsIT:
             "entities": {"url": "https://github.com/tensorflow/ranking"}
         }
 
-        mocker.patch('tools.os.environ.get', side_effect=[
+        mocker.patch('intent_handling.tools.os.environ.get', side_effect=[
             "CADOCSNLU_URL_PREDICT", "0.77", "0.55"])
         # Mock of the Response object
         mock_response = mocker.Mock(spec=requests.Response)

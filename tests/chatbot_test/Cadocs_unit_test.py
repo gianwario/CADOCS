@@ -1,8 +1,9 @@
 from chatbot import cadocs, intent_manager
-from src import intent_resolver, service
+from intent_handling import intent_resolver
+from src import service
 from chatbot.intent_manager import IntentManager
-from intent_resolver import IntentResolver
-from service.utils import CadocsIntents
+from intent_handling.intent_resolver import IntentResolver
+from intent_handling.cadocs_intents import CadocsIntents
 from chatbot.cadocs import Cadocs
 import pytest
 

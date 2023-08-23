@@ -1,6 +1,7 @@
 import pytest
 import requests
-from src import tool_selector, tools
+from intent_handling import tools
+from intent_handling import tool_selector
 
 
 class TestToolSelectorIT:
@@ -35,13 +36,13 @@ class TestToolSelectorIT:
         }
 
         # Mock of the dotenv module
-        mocker.patch('tools.os.environ.get',
+        mocker.patch('intent_handling.tools.os.environ.get',
                      return_value="CSDETECTOR_URL_GETSMELLS")
 
         # Mock of the Response object
         mock_response = mocker.Mock(spec=requests.Response)
         mock_response.json.return_value = response
-        mocker.patch("tools.requests.get", return_value=mock_response)
+        mocker.patch("intent_handling.tools.requests.get", return_value=mock_response)
 
         response = tool_selector_test.run(data_test)
 

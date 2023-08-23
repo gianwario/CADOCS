@@ -1,8 +1,9 @@
-from src import intent_resolver, service, tools, tool_selector
-from intent_resolver import IntentResolver
-from service.utils import CadocsIntents
-from tool_selector import ToolSelector
-from tools import CsDetectorTool
+from intent_handling import intent_resolver, tool_selector, tools
+from src import service
+from intent_handling.intent_resolver import IntentResolver
+from intent_handling.cadocs_intents import CadocsIntents
+from intent_handling.tool_selector import ToolSelector
+from intent_handling.tools import CsDetectorTool
 from tests.service_test.cadocs_messages_unit_test import TestCadocsMessagesUT
 import pytest
 import requests
@@ -42,13 +43,13 @@ class TestIntentResolverIT:
         }
 
         # Mock of the dotenv module
-        mocker.patch('tools.os.environ.get',
+        mocker.patch('intent_handling.tools.os.environ.get',
                      return_value="CSDETECTOR_URL_GETSMELLS")
 
         # Mock of the Response object
         mock_response = mocker.Mock(spec=requests.Response)
         mock_response.json.return_value = response
-        mocker.patch("tools.requests.get", return_value=mock_response)
+        mocker.patch("intent_handling.tools.requests.get", return_value=mock_response)
 
         result = intent_resolver_instance.resolve_intent(intent, entities)
 
@@ -70,13 +71,13 @@ class TestIntentResolverIT:
         }
 
         # Mock of the dotenv module
-        mocker.patch('tools.os.environ.get',
+        mocker.patch('intent_handling.tools.os.environ.get',
                      return_value="CSDETECTOR_URL_GETSMELLS")
 
         # Mock of the Response object
         mock_response = mocker.Mock(spec=requests.Response)
         mock_response.json.return_value = response
-        mocker.patch("tools.requests.get", return_value=mock_response)
+        mocker.patch("intent_handling.tools.requests.get", return_value=mock_response)
 
         result = intent_resolver_instance.resolve_intent(intent, entities)
 
