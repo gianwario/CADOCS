@@ -1,8 +1,8 @@
-from src import intent_manager, intent_resolver, cadocs, service
-from intent_manager import IntentManager
+from src import intent_resolver, service, chatbot
+from chatbot.intent_manager import IntentManager
 from intent_resolver import IntentResolver
 from service.utils import CadocsIntents
-from cadocs import Cadocs
+from chatbot.cadocs import Cadocs
 from tests.service_test.cadocs_messages_unit_test import TestCadocsMessagesUT
 import requests
 from unittest.mock import Mock, patch
@@ -54,7 +54,7 @@ class TestCadocsIT:
         mock_response_tools.json.return_value = response
 
         # Mock requests.get method
-        mocker.patch("intent_manager.requests.get",
+        mocker.patch("chatbot.intent_manager.requests.get",
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
         # Mock os.environ.get method
@@ -108,7 +108,7 @@ class TestCadocsIT:
         mock_response_tools.json.return_value = response
 
         # Mock requests.get method
-        mocker.patch("intent_manager.requests.get",
+        mocker.patch("chatbot.intent_manager.requests.get",
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
         # Mock os.environ.get method
@@ -151,7 +151,7 @@ class TestCadocsIT:
         mock_response_intent_manager.json.return_value = response_intent_manager
 
         # Mock requests.get method
-        mocker.patch("intent_manager.requests.get",
+        mocker.patch("chatbot.intent_manager.requests.get",
                      return_value=mock_response_intent_manager)
 
         # Mock os.environ.get method
@@ -194,7 +194,7 @@ class TestCadocsIT:
         # Mock of the Response object
         mock_response = mocker.Mock(spec=requests.Response)
         mock_response.json.return_value = response_intent_manager
-        mocker.patch("intent_manager.requests.get", return_value=mock_response)
+        mocker.patch("chatbot.intent_manager.requests.get", return_value=mock_response)
 
         response = {
             "files": [],

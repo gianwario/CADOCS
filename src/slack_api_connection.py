@@ -6,7 +6,7 @@ import threading
 from flask import Flask, request, json, make_response
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
-from cadocs import Cadocs
+from chatbot.cadocs import Cadocs
 from datetime import date
 from service.utils import CadocsIntents
 from dotenv import load_dotenv

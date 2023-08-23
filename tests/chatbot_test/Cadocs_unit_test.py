@@ -1,8 +1,9 @@
-from src import intent_manager, intent_resolver, service, cadocs
-from intent_manager import IntentManager
+from chatbot import cadocs, intent_manager
+from src import intent_resolver, service
+from chatbot.intent_manager import IntentManager
 from intent_resolver import IntentResolver
 from service.utils import CadocsIntents
-from cadocs import Cadocs
+from chatbot.cadocs import Cadocs
 import pytest
 
 
@@ -34,7 +35,7 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the IntentResolver object
         mocked_results = "Test OK"
@@ -75,7 +76,7 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the ask_confirm method
         mocked_result = "Confirm message"
@@ -116,11 +117,11 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the build_error_message method
         mocked_result = "Error message"
-        mocker.patch('cadocs.build_error_message',
+        mocker.patch('chatbot.cadocs.build_error_message',
                      return_value=mocked_result)
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -156,7 +157,7 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=False)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=False)
 
         # Mock error_message method
         msg = "Error: Invalid link"
@@ -188,10 +189,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
 
         # Mock the IntentResolver object
         mocked_results = "Test OK"
@@ -234,10 +235,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
 
         # Mock the ask_confirm method
         mocked_result = "Confirm message"
@@ -279,14 +280,14 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
 
         # Mock the build_error_message method
         mocked_result = "Error message"
-        mocker.patch('cadocs.build_error_message',
+        mocker.patch('chatbot.cadocs.build_error_message',
                      return_value=mocked_result)
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -322,10 +323,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=False)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=False)
 
         # Mock the valid_date method
-        mocker.patch('cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
 
         # Mock error_message method
         msg = "Error: Invalid link"
@@ -360,10 +361,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('cadocs.valid_date', return_value=False)
+        mocker.patch('chatbot.cadocs.valid_date', return_value=False)
 
         # Mock error_message method
         msg = "Error: Invalid date"
@@ -398,10 +399,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('cadocs.valid_link', return_value=False)
+        mocker.patch('chatbot.cadocs.valid_link', return_value=False)
 
         # Mock the valid_date method
-        mocker.patch('cadocs.valid_date', return_value=False)
+        mocker.patch('chatbot.cadocs.valid_date', return_value=False)
 
         # Mock error_message method
         msg = "Error: Invalid link and date"
@@ -517,7 +518,7 @@ class TestCadocsUT:
     def test_get_last_execution_missing_file(self, cadocs_instance, mocker):
         user_test = "user"
         # Mock the path.isfile method
-        mocker.patch('cadocs.path.isfile', return_value=False)
+        mocker.patch('chatbot.cadocs.path.isfile', return_value=False)
 
         # Assertions
         with pytest.raises(Exception, match="File not found"):

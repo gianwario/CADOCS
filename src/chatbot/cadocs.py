@@ -1,4 +1,4 @@
-from intent_manager import IntentManager
+from chatbot.intent_manager import IntentManager
 from intent_resolver import IntentResolver
 from service.cadocs_messages import build_error_message
 from service.utils import CadocsIntents
