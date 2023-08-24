@@ -35,12 +35,11 @@ class TestUtils:
     @patch('datetime.datetime')
     def test_valid_date_with_valid_date(self, mock_datetime, mock_findall):
         # Mock the return value of re.findall
-        mock_findall.return_value = ["2022/01/01"]
-
+        mock_findall.return_value = [["2022/01/01"]]
+        # It's used the real replace method of string
         mock_datetime.return_value = datetime.datetime(2022, 1, 1)
         # Mock the valid_date method
         result = valid_date("01/01/2022")
-
         #Assertion
         assert result == True
 

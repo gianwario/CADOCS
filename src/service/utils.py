@@ -3,7 +3,7 @@ import re
 
 
 def valid_link(url):
-   re_equ = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+   re_equ = r"((https:\/\/)?(www\.)?github\.com\/.*)"
    ck_url = re.findall(re_equ, url)
    if ck_url:
       return True
@@ -11,15 +11,17 @@ def valid_link(url):
       return False
 
 def valid_date(date):
-   rs_date = re.findall('\d{2}/\d{2}/\d{4}',date)
+   date = date.replace(".", "/")
+   date = date.replace("-", "/")
+   re_date = r"((0[1-9]|1[0-2])[\/](0[1-9]|[12][0-9]|3[01])[\/](\d{4})$)"
+   rs_date = re.findall(re_date,date)
    if(rs_date):
-      ls = rs_date[0].split("/")
-
+      ls = rs_date[0][0].split("/")
       is_correct = None
-
       try:
          newDate = datetime.datetime(int(ls[2]),int(ls[0]),int(ls[1]))
          is_correct = True
+         print(newDate)
       except ValueError:
          is_correct = False
       return is_correct
