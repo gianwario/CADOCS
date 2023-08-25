@@ -6,7 +6,8 @@ import threading
 from flask import Flask, request, json, make_response
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
-from chatbot.cadocs import Cadocs
+from chatbot.cadocs_slack import CadocsSlack
+from chatbot import cadocs_utils
 from datetime import date
 from intent_handling.cadocs_intents import CadocsIntents
 from dotenv import load_dotenv
@@ -24,7 +25,7 @@ slack_web_client = WebClient(token=os.environ.get('SLACK_TOKEN', ""))
 
 
 # create our chatbot instance
-cadocs = Cadocs()
+cadocs = CadocsSlack()
 
 # This event will fire up every time there is a new message on a chat with the bot invited
 
@@ -81,7 +82,7 @@ def handle_request(payload):
         slack_web_client.chat_postMessage(**response)
         # we check if the intent was to execute csdetector in order to save the the results for a future report
         if ((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
-            cadocs.save_execution(results, "Community Smell Detection", date.today(
+            cadocs_utils.save_execution(results, "Community Smell Detection", date.today(
             ).strftime("%m/%d/%Y"), entities[0], user.get('id'))
             # we post the attachments (pdf files) to slack
             attach_th = threading.Thread(
@@ -155,7 +156,7 @@ def handle_action(data):
             slack_web_client.chat_postMessage(**response)
             # we save the execution if the intent was to run csdetector
             if ((intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate) and results != None):
-                cadocs.save_execution(results, "Community Smell Detection", date.today(
+                cadocs_utils.save_execution(results, "Community Smell Detection", date.today(
                 ).strftime("%m/%d/%Y"), entities[0], user_id)
                 # we post the pdf attachments
                 attach_th = threading.Thread(

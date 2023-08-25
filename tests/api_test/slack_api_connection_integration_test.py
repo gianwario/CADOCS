@@ -1,8 +1,8 @@
-from chatbot import cadocs
+from chatbot import cadocs_slack
 from src import api, service, chatbot
 from api import slack_api_connection
 from service import utils
-from chatbot.cadocs import Cadocs
+from chatbot.cadocs_slack import CadocsSlack
 from intent_handling.cadocs_intents import CadocsIntents
 import pytest
 import requests

@@ -3,7 +3,8 @@ from api import slack_api_connection
 from src.service import utils
 from intent_handling.cadocs_intents import CadocsIntents
 from flask import Flask, make_response
-from api.slack_api_connection import app, Cadocs
+from api.slack_api_connection import app, CadocsSlack
+from src.chatbot import cadocs_utils
 import json
 import pytest
 import requests
@@ -69,15 +70,14 @@ class TestSlackAPIConnectionUT:
         mock_post_waiting_message.do_run = True
         mocker.patch('api.slack_api_connection.post_waiting_message',
                      return_value=mock_post_waiting_message)
-        # Mock the new_message function of Cadocs class
-        mocker.patch.object(slack_api_connection.Cadocs, "new_message", return_value=(
+        # Mock the new_message function of CadocsSlack class
+        mocker.patch.object(slack_api_connection.CadocsSlack, "new_message", return_value=(
             {"response": "ok"}, "result ok", entities, intent))
         # Mock the chat_postMessage function of slack_web_client
         mocker.patch.object(slack_api_connection.WebClient,
                             "chat_postMessage", return_value="")
-        # Mock the save_execution function of Cadocs class
-        mocker.patch.object(slack_api_connection.Cadocs,
-                            "save_execution", return_value="")
+        # Mock the save_execution function of cadocs_utils file
+        mocker.patch("chatbot.cadocs_utils.save_execution", return_value="")
         # Mock the start method of Thread class
         mocker.patch.object(slack_api_connection.threading.Thread,
                             'start', return_value=self.mock_post_attachments)
@@ -109,9 +109,9 @@ class TestSlackAPIConnectionUT:
         mock_progress_message.do_run = True
         mocker.patch('api.slack_api_connection.post_waiting_message',
                      return_value=mock_progress_message)
-        # Mock the new_message function of Cadocs class to make it throw an exception
+        # Mock the new_message function of CadocsSlack class to make it throw an exception
         mock_new_message = Mock(side_effect=Exception("test exception"))
-        mocker.patch.object(slack_api_connection.Cadocs,
+        mocker.patch.object(slack_api_connection.CadocsSlack,
                             "new_message", mock_new_message)
         expected_response = {"message": "false"}
         # Assertions

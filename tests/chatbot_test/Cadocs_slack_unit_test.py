@@ -1,18 +1,18 @@
-from chatbot import cadocs, intent_manager
+from chatbot import cadocs_slack, intent_manager, cadocs_utils
 from intent_handling import intent_resolver
 from src import service
 from chatbot.intent_manager import IntentManager
 from intent_handling.intent_resolver import IntentResolver
 from intent_handling.cadocs_intents import CadocsIntents
-from chatbot.cadocs import Cadocs
+from chatbot.cadocs_slack import CadocsSlack
 import pytest
 
 
-class TestCadocsUT:
+class TestCadocsSlackUT:
 
     @pytest.fixture
     def cadocs_instance(self):
-        cadocs = Cadocs()
+        cadocs = CadocsSlack()
         yield cadocs
 
     def test_new_message_get_smells_valid_link_high_confidence(self, cadocs_instance, mocker):
@@ -36,7 +36,7 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the IntentResolver object
         mocked_results = "Test OK"
@@ -77,11 +77,11 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the ask_confirm method
         mocked_result = "Confirm message"
-        mocker.patch.object(Cadocs, 'ask_confirm',
+        mocker.patch.object(CadocsSlack, 'ask_confirm',
                             return_value=(mocked_result))
 
         # Mock the build_message method
@@ -118,11 +118,11 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the build_error_message method
         mocked_result = "Error message"
-        mocker.patch('chatbot.cadocs.build_error_message',
+        mocker.patch('chatbot.cadocs_slack.build_error_message',
                      return_value=mocked_result)
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -158,7 +158,7 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=False)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=False)
 
         # Mock error_message method
         msg = "Error: Invalid link"
@@ -190,10 +190,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_date', return_value=True)
 
         # Mock the IntentResolver object
         mocked_results = "Test OK"
@@ -236,14 +236,14 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_date', return_value=True)
 
         # Mock the ask_confirm method
         mocked_result = "Confirm message"
-        mocker.patch.object(Cadocs, 'ask_confirm',
+        mocker.patch.object(CadocsSlack, 'ask_confirm',
                             return_value=(mocked_result))
 
         # Mock the build_message method
@@ -281,14 +281,14 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_date', return_value=True)
 
         # Mock the build_error_message method
         mocked_result = "Error message"
-        mocker.patch('chatbot.cadocs.build_error_message',
+        mocker.patch('chatbot.cadocs_slack.build_error_message',
                      return_value=mocked_result)
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -324,10 +324,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=False)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=False)
 
         # Mock the valid_date method
-        mocker.patch('chatbot.cadocs.valid_date', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_date', return_value=True)
 
         # Mock error_message method
         msg = "Error: Invalid link"
@@ -362,10 +362,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=True)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=True)
 
         # Mock the valid_date method
-        mocker.patch('chatbot.cadocs.valid_date', return_value=False)
+        mocker.patch('chatbot.cadocs_slack.valid_date', return_value=False)
 
         # Mock error_message method
         msg = "Error: Invalid date"
@@ -400,10 +400,10 @@ class TestCadocsUT:
             mocked_intent, mocked_entities, mocked_confidence))
 
         # Mock the valid_link method
-        mocker.patch('chatbot.cadocs.valid_link', return_value=False)
+        mocker.patch('chatbot.cadocs_slack.valid_link', return_value=False)
 
         # Mock the valid_date method
-        mocker.patch('chatbot.cadocs.valid_date', return_value=False)
+        mocker.patch('chatbot.cadocs_slack.valid_date', return_value=False)
 
         # Mock error_message method
         msg = "Error: Invalid link and date"
@@ -445,8 +445,7 @@ class TestCadocsUT:
         # Mock get_last_execution method
         mocked_last_ex = {"results": "Test OK", "repo": "https://github.com/tensorflow/ranking",
                           "date": "12/12/2022", "exec_type": "get_smells"}
-        mocker.patch.object(
-            cadocs_instance, 'get_last_execution', return_value=mocked_last_ex)
+        mocker.patch("chatbot.cadocs_utils.get_last_execution", return_value=mocked_last_ex)
 
         # Mock build_message method
         mocked_response = "Report message"
@@ -516,15 +515,6 @@ class TestCadocsUT:
 
         assert response == msg
 
-    def test_get_last_execution_missing_file(self, cadocs_instance, mocker):
-        user_test = "user"
-        # Mock the path.isfile method
-        mocker.patch('chatbot.cadocs.path.isfile', return_value=False)
-
-        # Assertions
-        with pytest.raises(Exception, match="File not found"):
-            cadocs_instance.get_last_execution(user_test)
-
     def test_error_message_url(self, cadocs_instance):
         error_type = "url"
         username_test = "user_test"
@@ -552,7 +542,7 @@ class TestCadocsUT:
         error_type = "date"
         username_test = "user_test"
         channel_test = 1
-        txt = "Hi "+username_test+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct format is MM/DD/YYYY."
+        txt = "Hi "+username_test+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct formats are MM/DD/YYYY, MM.DD.YYYY or MM-DD-YYYY."
         expected_response = {"channel": channel_test, "blocks": [{
             "type": "section",
             "text": {

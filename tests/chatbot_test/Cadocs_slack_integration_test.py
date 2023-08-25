@@ -3,7 +3,7 @@ from src import service, chatbot
 from chatbot.intent_manager import IntentManager
 from intent_handling.intent_resolver import IntentResolver
 from intent_handling.cadocs_intents import CadocsIntents
-from chatbot.cadocs import Cadocs
+from chatbot.cadocs_slack import CadocsSlack
 from tests.service_test.cadocs_messages_unit_test import TestCadocsMessagesUT
 import requests
 from unittest.mock import Mock, patch
@@ -11,11 +11,11 @@ import pytest
 import json
 
 
-class TestCadocsIT:
+class TestCadocsSlackIT:
 
     @pytest.fixture
     def cadocs_instance(self):
-        cadocs = Cadocs()
+        cadocs = CadocsSlack()
         yield cadocs
 
     def test_new_message_get_smells_valid_link(self, cadocs_instance, mocker):

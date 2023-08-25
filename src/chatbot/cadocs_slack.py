@@ -1,9 +1,8 @@
 from chatbot.intent_manager import IntentManager
 from intent_handling.intent_resolver import IntentResolver
+from chatbot import cadocs_utils
 from service.cadocs_messages import build_error_message
 from intent_handling.cadocs_intents import CadocsIntents
-import json
-from os import path
 import os
 from dotenv import load_dotenv
 from service.utils import valid_link, valid_date
@@ -12,7 +11,7 @@ load_dotenv('src/.env')
 # the Cadocs class contains the logic behind the tool's execution
 
 
-class Cadocs:
+class CadocsSlack:
 
     def __init__(self):
         self.last_repo = ""
@@ -53,7 +52,7 @@ class Cadocs:
             results = resolver.resolve_intent(intent, entities)
             # if the intent is report, we have to use previously existing info instead of computed ones
             if (intent == CadocsIntents.Report):
-                last_ex = self.get_last_execution(user.get('id'))
+                last_ex = cadocs_utils.get_last_execution(user.get('id'))
                 results = last_ex.get('results')
                 entities = [last_ex.get('repo'), last_ex.get(
                     'date'), last_ex.get('exec_type')]
@@ -72,7 +71,6 @@ class Cadocs:
     # this method builds a message that will ask the user if
     # the intent was correctly predicted
     # this information will be used to retrain the model
-
     def ask_confirm(self, intent, channel, user):
         self.asked_user = user
         text = ""
@@ -124,61 +122,13 @@ class Cadocs:
 
         return mess
 
-    # this method saves execution results to file system
-    # in order to retrieve it when needed
-    # we chose the json due to the format of the input
-    # and basing on the following study
-    # http://matthewrocklin.com/blog/work/2015/03/16/Fast-Serialization
-
-    def save_execution(self, results, exec_type, date, repo, user):
-        filename = f'src/executions/executions_{user}.json'
-        list_obj = []
-        # Check if file exists
-        if path.isfile(filename) is False:
-            with open(filename, 'w'):
-                pass
-
-        with open(filename) as fp:
-            try:
-                list_obj = json.load(fp)
-            except:
-                pass
-            list_obj.append(
-                {
-                    "user": user,
-                    "exec_type": exec_type,
-                    "date": date,
-                    "repo": repo,
-                    "results": results
-                }
-            )
-        with open(filename, 'w') as json_file:
-            json.dump(list_obj, json_file,
-                      indent=4,
-                      separators=(',', ': '))
-        # Read JSON file
-
-    # this method will retrieve the last execution of the current user in order to display it
-
-    def get_last_execution(self, user):
-        filename = f'src/executions/executions_{user}.json'
-        list_obj = []
-        # Check if file exists
-        if path.isfile(filename) is False:
-            raise Exception("File not found")
-
-        # Read JSON file
-        with open(filename) as fp:
-            list_obj = json.load(fp)
-        return list_obj[list_obj.__len__()-1]
-
     # error message building for bad requests (messages shown before even executing the tool)
     def error_message(self, error_type, channel, username):
         txt = ""
         if (error_type == "url"):
             txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub."
         if (error_type == "date"):
-            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct format is MM/DD/YYYY."
+            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct formats are MM/DD/YYYY, MM.DD.YYYY or MM-DD-YYYY."
         if (error_type == "date_url"):
             txt = "Hi "+username + \
                 ", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY)."
@@ -191,7 +141,7 @@ class Cadocs:
                 "emoji": True
             }
         }]}, None, None, None
-
+    
     def something_wrong(self, channel):
         return {"channel": channel, "blocks": [{
             "type": "section",
