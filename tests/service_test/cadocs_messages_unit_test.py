@@ -1,92 +1,10 @@
 import pytest
 import json
 from src.service import cadocs_messages
+from intent_handling.cadocs_intents import CadocsIntents
+from tests import utils_tests
 
 class TestCadocsMessagesUT:
-
-    # Functions to create and modify text blocks are defined here
-
-    def initial_block(self, user_test):
-        blocks = []
-        blocks.append(
-                {
-                    "type": "header",
-                    "text": {
-                        "type": "plain_text",
-                        "text": "Hi "+user_test+" :wave:",
-                        "emoji": True
-                    }
-                }
-        )
-        
-        return blocks   
-    
-    def append_second_block(self, blocks, text_test):
-        blocks.append(
-        {
-            "type": "section",
-            "text": {
-                "type": "plain_text",
-                "text": text_test,
-                "emoji": True
-            }
-        }
-        )
-
-    def append_found_smells_block(self, smells_test, blocks):
-        with open('src/community_smells.json') as fp:
-            data = json.load(fp)
-            for s in smells_test:
-                smell_data = [sm for sm in data if sm["acronym"] == s]
-                
-                blocks.append({
-                        "type": "divider"
-                    })
-                blocks.append(
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text":"*"+ s +"* "+ smell_data[0].get("name") +" "+smell_data[0].get("emoji") +"\n_"+smell_data[0].get("description")+"_"
-                        }
-                    }
-                )
-                strategies = smell_data[0].get("strategies")
-
-                if(len(strategies) > 0):
-                    blocks.append({
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "Some possible mitigation strategies are:"
-                        }
-                    })
-                    for st in strategies:
-                            blocks.append({
-                                "type": "section",
-                                "fields": [{
-                                    "type": "mrkdwn",
-                                    "text": ">"+st.get("strategy")+"" 
-                                }, {
-                                    "type": "mrkdwn",
-                                    "text": st.get("stars"),
-                                }
-                            ]})
-
-    def append_final_block(self, blocks):
-        blocks.append({
-                    "type": "divider"
-                })
-        blocks.append(
-            {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": "See you soon :wave:"
-                }
-            } 
-        )
-    
     def test_build_cs_message_two_entities_zero_smell(self):
         smells_test=[]
         channel_test=1
@@ -95,17 +13,17 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
 
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         text_test = "These are the community smells we were able to detect in the repository "+entities_test[0]+":"
 
-        self.append_second_block(blocks, text_test)
+        utils_tests.append_second_block(blocks, text_test)
 
         # It was decided not to mock the open function for files
 
         # The case where zero smells are present is simulated
 
-        self.append_final_block(blocks)
+        utils_tests.append_final_block(blocks)
 
         response = cadocs_messages.build_cs_message(smells_test, channel_test, user_test, entities_test)
 
@@ -123,18 +41,18 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
 
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         text_test = "These are the community smells we were able to detect in the repository "+entities_test[0]+":"
 
-        self.append_second_block(blocks, text_test)
+        utils_tests.append_second_block(blocks, text_test)
 
         # It was decided not to mock the open function for files
 
         # The case where one smell (OSE) is present is simulated
-        self.append_found_smells_block(smells_test, blocks)
+        utils_tests.append_found_smells_block(smells_test, blocks)
 
-        self.append_final_block(blocks)
+        utils_tests.append_final_block(blocks)
 
         response = cadocs_messages.build_cs_message(smells_test, channel_test, user_test, entities_test)
 
@@ -152,18 +70,18 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
 
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         text_test = "These are the community smells we were able to detect in the repository "+entities_test[0]+":"
 
-        self.append_second_block(blocks, text_test)
+        utils_tests.append_second_block(blocks, text_test)
 
         # It was decided not to mock the open function for files
 
         # The case where two smells are present is simulated: OSE (Organizational Silo Effect) and BCE (Black-cloud Effect)
-        self.append_found_smells_block(smells_test, blocks)
+        utils_tests.append_found_smells_block(smells_test, blocks)
 
-        self.append_final_block(blocks)
+        utils_tests.append_final_block(blocks)
 
         response = cadocs_messages.build_cs_message(smells_test, channel_test, user_test, entities_test)
 
@@ -181,18 +99,18 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
 
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         text_test = "These are the community smells we were able to detect in the repository "+entities_test[0]+":"
         
-        self.append_second_block(blocks, text_test)
+        utils_tests.append_second_block(blocks, text_test)
 
         # It was decided not to mock the open function for files
 
         # The case where one smell without strategies (SV) is present is simulated
-        self.append_found_smells_block(smells_test, blocks)
+        utils_tests.append_found_smells_block(smells_test, blocks)
 
-        self.append_final_block(blocks)
+        utils_tests.append_final_block(blocks)
 
         response = cadocs_messages.build_cs_message(smells_test, channel_test, user_test, entities_test)
 
@@ -210,18 +128,18 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
 
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         text_test = "These are the community smells we were able to detect in the repository "+entities_test[0]+" starting from "+entities_test[1]+":"
 
-        self.append_second_block(blocks, text_test)
+        utils_tests.append_second_block(blocks, text_test)
 
         # It was decided not to mock the open function for files
 
         # The case where two smells are present is simulated: OSE (Organizational Silo Effect) and BCE (Black-cloud Effect)
-        self.append_found_smells_block(smells_test, blocks)
+        utils_tests.append_found_smells_block(smells_test, blocks)
 
-        self.append_final_block(blocks)
+        utils_tests.append_final_block(blocks)
 
         response = cadocs_messages.build_cs_message(smells_test, channel_test, user_test, entities_test)
 
@@ -240,7 +158,7 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
         
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         blocks.append({
                 "type": "section",
@@ -294,7 +212,7 @@ class TestCadocsMessagesUT:
 
         # The text block is created like in the function to test to later compare the results
 
-        blocks = self.initial_block(user_test)
+        blocks = utils_tests.initial_block(user_test)
 
         blocks.append({
                 "type": "section",
@@ -357,3 +275,63 @@ class TestCadocsMessagesUT:
         response = cadocs_messages.build_error_message(channel_test, user_test)
         # Assertions
         assert response == expected_response
+
+    def test_build_message_get_smells(self, mocker):
+        user = {
+            "profile": {
+                "first_name": "test"
+            }
+        }
+
+        # Mock the build_message method of the cadocs_messages module
+        mocker.patch(
+            'src.service.cadocs_messages.build_cs_message', return_value="Test OK")
+        
+        result = cadocs_messages.build_message(
+            "Test OK", user, "channel", CadocsIntents.GetSmells, ["https://github.com/tensorflow/ranking"])
+
+        assert result == "Test OK"
+
+    def test_build_message_get_smells_date(self, mocker):
+        user = {
+            "profile": {
+                "first_name": "test"
+            }
+        }
+
+        # Mock the build_message method of the cadocs_messages module
+        mocker.patch('src.service.cadocs_messages.build_cs_message', return_value="Test OK")
+        result = cadocs_messages.build_message(
+            "Test OK", user, "channel", CadocsIntents.GetSmellsDate, ["https://github.com/tensorflow/rankin, 12/12/2022"])
+
+        assert result == "Test OK"
+
+    def test_build_message_report(self, mocker):
+        user = {
+            "profile": {
+                "first_name": "test"
+            }
+        }
+
+        # Mock the build_message method of the cadocs_messages module
+        mocker.patch(
+            'src.service.cadocs_messages.build_report_message', return_value="Test OK")
+        result = cadocs_messages.build_message(
+            "Test OK", user, "channel", CadocsIntents.Report, ["https://github.com/tensorflow/ranking", "12/12/2022", "report"])
+
+        assert result == "Test OK"
+
+    def test_build_message_info(self, mocker):
+        user = {
+            "profile": {
+                "first_name": "test"
+            }
+        }
+
+        # Mock the build_message method of the cadocs_messages module
+        mocker.patch(
+            'src.service.cadocs_messages.build_info_message', return_value="Test OK")
+        result = cadocs_messages.build_message(
+            "Test OK", user, "channel", CadocsIntents.Info, [])
+
+        assert result == "Test OK"

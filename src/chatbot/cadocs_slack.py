@@ -1,7 +1,7 @@
 from chatbot.intent_manager import IntentManager
 from intent_handling.intent_resolver import IntentResolver
 from chatbot import cadocs_utils
-from service.cadocs_messages import build_error_message
+from service.cadocs_messages import build_error_message, build_message
 from intent_handling.cadocs_intents import CadocsIntents
 import os
 from dotenv import load_dotenv
@@ -57,7 +57,7 @@ class CadocsSlack:
                 entities = [last_ex.get('repo'), last_ex.get(
                     'date'), last_ex.get('exec_type')]
             # ask a function to create a slack message
-            response = resolver.build_message(
+            response = build_message(
                 results, user, channel, intent, entities)
             exec_data.update({"executed": True})
             # we update the conversation history

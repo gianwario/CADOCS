@@ -1,5 +1,5 @@
 import json
-
+from intent_handling.cadocs_intents import CadocsIntents
 
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
 def build_cs_message(smells, channel, user, entities):
@@ -198,7 +198,6 @@ def build_info_message(channel, user):
         "blocks": blocks
     }
 
-
 def build_error_message(channel, user):
     return {
         "channel": channel,
@@ -212,3 +211,18 @@ def build_error_message(channel, user):
             }
         ]
     }
+
+# this function will format the message basing on the intent
+def build_message(results, user, channel, intent, entities):
+    username = user.get('profile').get('first_name')
+    if intent == CadocsIntents.GetSmells or intent == CadocsIntents.GetSmellsDate:
+        response = build_cs_message(
+            results, channel, username, entities)
+        return response
+    elif intent == CadocsIntents.Report:
+        response = build_report_message(
+            channel, entities[2], results, username, entities)
+        return response
+    elif intent == CadocsIntents.Info:
+        response = build_info_message(channel, username)
+        return response

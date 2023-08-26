@@ -44,7 +44,7 @@ class TestCadocsSlackUT:
                             return_value=(mocked_results))
 
         # Mock the build_message method
-        mocker.patch.object(IntentResolver, 'build_message',
+        mocker.patch('chatbot.cadocs_slack.build_message',
                             return_value="get smells")
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -85,7 +85,7 @@ class TestCadocsSlackUT:
                             return_value=(mocked_result))
 
         # Mock the build_message method
-        mocker.patch.object(IntentResolver, 'build_message',
+        mocker.patch('chatbot.cadocs_slack.build_message',
                             return_value="get smells")
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -201,7 +201,7 @@ class TestCadocsSlackUT:
                             return_value=(mocked_results))
 
         # Mock the build_message method
-        mocker.patch.object(IntentResolver, 'build_message',
+        mocker.patch('chatbot.cadocs_slack.build_message',
                             return_value="get smells date")
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -247,7 +247,7 @@ class TestCadocsSlackUT:
                             return_value=(mocked_result))
 
         # Mock the build_message method
-        mocker.patch.object(IntentResolver, 'build_message',
+        mocker.patch('chatbot.cadocs_slack.build_message',
                             return_value="get smells")
 
         response, results, entities, intent = cadocs_instance.new_message(
@@ -449,7 +449,7 @@ class TestCadocsSlackUT:
 
         # Mock build_message method
         mocked_response = "Report message"
-        mocker.patch.object(IntentResolver, 'build_message',
+        mocker.patch('chatbot.cadocs_slack.build_message',
                             return_value=mocked_response)
 
         response, results, entities, intent = cadocs_instance.new_message(
