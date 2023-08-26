@@ -11,8 +11,6 @@ def valid_link(url):
       return False
 
 def valid_date(date):
-   date = date.replace(".", "/")
-   date = date.replace("-", "/")
    re_date = r"((0[1-9]|1[0-2])[\/](0[1-9]|[12][0-9]|3[01])[\/](\d{4})$)"
    rs_date = re.findall(re_date,date)
    if(rs_date):
