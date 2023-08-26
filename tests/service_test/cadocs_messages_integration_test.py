@@ -1,5 +1,5 @@
-from intent_handling import intent_resolver, tool_selector, tools
-from intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling import intent_resolver, tool_selector, tools
+from src.intent_handling.cadocs_intents import CadocsIntents
 from src.service import cadocs_messages
 import pytest
 import json

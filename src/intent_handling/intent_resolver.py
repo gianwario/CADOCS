@@ -1,6 +1,6 @@
-from intent_handling.cadocs_intents import CadocsIntents
-from intent_handling.tool_selector import ToolSelector
-from intent_handling.tools import CsDetectorTool
+from src.intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling.tool_selector import ToolSelector
+from src.intent_handling.tools import CsDetectorTool
 
 # the Intent Resolver is used to handle the execution given a predicted intent
 class IntentResolver:

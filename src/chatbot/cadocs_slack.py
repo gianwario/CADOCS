@@ -1,11 +1,11 @@
-from chatbot.intent_manager import IntentManager
-from intent_handling.intent_resolver import IntentResolver
-from chatbot import cadocs_utils
-from service.cadocs_messages import build_error_message, build_message
-from intent_handling.cadocs_intents import CadocsIntents
+from src.chatbot.intent_manager import IntentManager
+from src.intent_handling.intent_resolver import IntentResolver
+from src.chatbot import cadocs_utils
+from src.service.cadocs_messages import build_error_message, build_message
+from src.intent_handling.cadocs_intents import CadocsIntents
 import os
 from dotenv import load_dotenv
-from service.utils import valid_link, valid_date
+from src.service.utils import valid_link, valid_date
 load_dotenv('src/.env')
 
 # the Cadocs class contains the logic behind the tool's execution

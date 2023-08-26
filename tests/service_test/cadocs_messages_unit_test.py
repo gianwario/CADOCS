@@ -1,7 +1,7 @@
 import pytest
 import json
 from src.service import cadocs_messages
-from intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling.cadocs_intents import CadocsIntents
 from tests import utils_tests
 
 class TestCadocsMessagesUT:

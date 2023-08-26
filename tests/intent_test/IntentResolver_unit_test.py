@@ -1,9 +1,8 @@
-from intent_handling import intent_resolver, tool_selector, tools
-from src import service
-from intent_handling.intent_resolver import IntentResolver
-from intent_handling.cadocs_intents import CadocsIntents
-from intent_handling.tool_selector import ToolSelector
-from intent_handling.tools import CsDetectorTool
+from src.intent_handling import intent_resolver, tool_selector, tools
+from src.intent_handling.intent_resolver import IntentResolver
+from src.intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling.tool_selector import ToolSelector
+from src.intent_handling.tools import CsDetectorTool
 from unittest.mock import Mock
 import pytest
 

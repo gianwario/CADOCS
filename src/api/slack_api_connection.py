@@ -1,4 +1,10 @@
+# To run this project, this file must be run from the CADOCS directory
+
 import os
+# This operation is needed to run this project because it sets the CADOCS directory in the PYTHONPATH environment variabile.
+import sys
+sys.path.append(os.getcwd())
+
 import logging
 import requests
 import json
@@ -6,10 +12,10 @@ import threading
 from flask import Flask, request, json, make_response
 from slack import WebClient
 from slackeventsapi import SlackEventAdapter
-from chatbot.cadocs_slack import CadocsSlack
-from chatbot import cadocs_utils
+from src.chatbot.cadocs_slack import CadocsSlack
+from src.chatbot import cadocs_utils
 from datetime import date
-from intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling.cadocs_intents import CadocsIntents
 from dotenv import load_dotenv
 import time
 load_dotenv('src/.env')

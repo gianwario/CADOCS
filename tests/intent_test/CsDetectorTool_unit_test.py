@@ -1,5 +1,5 @@
-from intent_handling import tools
-from intent_handling.tools import CsDetectorTool
+from src.intent_handling import tools
+from src.intent_handling.tools import CsDetectorTool
 import requests
 from unittest.mock import mock_open, patch
 import pytest
@@ -31,7 +31,7 @@ class TestCsDetectorToolUT:
         }
 
         # Mock of the dotenv module
-        mocker.patch('intent_handling.tools.os.environ.get',
+        mocker.patch('src.intent_handling.tools.os.environ.get',
                      return_value="CSDETECTOR_URL_GETSMELLS")
 
         # Mock of the Response object

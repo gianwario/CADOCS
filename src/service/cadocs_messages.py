@@ -1,5 +1,5 @@
 import json
-from intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling.cadocs_intents import CadocsIntents
 
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
 def build_cs_message(smells, channel, user, entities):

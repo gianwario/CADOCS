@@ -1,4 +1,4 @@
-from intent_handling.cadocs_intents import CadocsIntents
+from src.intent_handling.cadocs_intents import CadocsIntents
 import requests
 import os
 from dotenv import load_dotenv

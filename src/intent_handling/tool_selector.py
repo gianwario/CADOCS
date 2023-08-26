@@ -1,5 +1,5 @@
 from __future__ import annotations
-from intent_handling.tool_strategy import Tool
+from src.intent_handling.tool_strategy import Tool
 from typing import List
 
 # this is the context for our strategy pattern
