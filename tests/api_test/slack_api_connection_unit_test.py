@@ -198,30 +198,3 @@ class TestSlackAPIConnectionUT:
         # Assertion for verify the text of response
         assert response.get_data(
             as_text=True) == "Error: No message to provide to the model. Please insert a valid message."
-
-    def test_update_dataset(self, mocker, client):
-        # Mock of the Response object
-        mock_response = mocker.Mock(spec=requests.Response)
-        mocker.patch("src.api.slack_api_connection.requests.get",
-                     return_value=mock_response)
-
-        client.get(
-            "/cadocsNLU/update?message=hello i'm tester&intent=test_intent")
-
-        expected_url = "http://localhost:5000/update_dataset?message=hello i'm tester&intent=test_intent"
-
-        # Assertion for verify the url called
-        requests.get.assert_called_once_with(expected_url)
-
-    @pytest.mark.parametrize("args", ["?message=hello i'm tester", "?intent=test_intent", ""])
-    def test_update_dataset_no_message_no_intent(self, mocker, client, args):
-        # Mock of the Response object
-        mock_response = mocker.Mock(spec=requests.Response)
-        mocker.patch("src.api.slack_api_connection.requests.get",
-                     return_value=mock_response)
-
-        response = client.get(f"/cadocsNLU/update{args}")
-
-        # Assertion for verify the text of response
-        assert response.get_data(
-            as_text=True) == "Error: The past message or intent is incorrect. Please provide the right parameters."

@@ -20,7 +20,6 @@ class TestCadocsSlackIT:
     def test_new_message_get_smells_valid_link(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https://github.com/tensorflow/ranking",
-            "approved": True,
             "executed": False
         }
         user = {
@@ -58,8 +57,8 @@ class TestCadocsSlackIT:
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
         # Mock os.environ.get method
-        mocker.patch('src.intent_handling.tools.os.environ.get', side_effect=[
-            "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77"])
+        mocker.patch('src.intent_handling.tools.os.environ.get', return_value="CADOCSNLU_URL_PREDICT")
+        mocker.patch('src.chatbot.cadocs_slack.os.environ.get', return_value="0.55")
 
         response, results, entities, intent = cadocs_instance.new_message(
             exec_data, "channel", user)
@@ -73,7 +72,6 @@ class TestCadocsSlackIT:
     def test_new_message_get_smells_valid_date(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https://github.com/tensorflow/ranking from 10/10/2020",
-            "approved": True,
             "executed": False
         }
         user = {
@@ -111,9 +109,9 @@ class TestCadocsSlackIT:
         mocker.patch("src.chatbot.intent_manager.requests.get",
                      side_effect=[mock_response_intent_manager, mock_response_tools])
 
-        # Mock os.environ.get method
-        mocker.patch('src.intent_handling.tools.os.environ.get', side_effect=[
-            "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77"])
+       # Mock os.environ.get method
+        mocker.patch('src.intent_handling.tools.os.environ.get', return_value="CADOCSNLU_URL_PREDICT")
+        mocker.patch('src.chatbot.cadocs_slack.os.environ.get', return_value="0.55")
 
         response, results, entities, intent = cadocs_instance.new_message(
             exec_data, "channel", user)
@@ -127,7 +125,6 @@ class TestCadocsSlackIT:
     def test_new_message_get_smells_valid_link_low_confidence(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https://github.com/tensorflow/ranking",
-            "approved": False,
             "executed": False
         }
         user = {
@@ -156,97 +153,12 @@ class TestCadocsSlackIT:
 
         # Mock os.environ.get method
         mocker.patch('os.environ.get', side_effect=[
-            "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77", "0.5"])
+            "CADOCSNLU_URL_PREDICT", "0.55", "0.5"])
 
         response, results, entities, intent = cadocs_instance.new_message(
             exec_data, "channel", user)
 
         # Assertions
-        assert results == None
-        assert entities == None
-        assert intent == None
-
-    def test_new_message_get_smells_w_ask_confirm(self, cadocs_instance, mocker):
-        exec_data = {
-            "text": "can you get community smells for this repo https://github.com/tensorflow/ranking",
-            "approved": False,
-            "executed": False
-        }
-        user = {
-            "id": 1,
-            "username": "user",
-            "profile": {"first_name": "user_test"}
-        }
-
-        channel_test = 1
-        response_intent_manager = {
-            "intent": {
-                "intent": {
-                    "name": "get_smells",
-                    "confidence": 0.6
-                }
-            },
-            "entities": {"url": "https://github.com/tensorflow/ranking"}
-        }
-
-        mocker.patch('src.intent_handling.tools.os.environ.get', side_effect=[
-            "CADOCSNLU_URL_PREDICT", "0.77", "0.55"])
-        # Mock of the Response object
-        mock_response = mocker.Mock(spec=requests.Response)
-        mock_response.json.return_value = response_intent_manager
-        mocker.patch("src.chatbot.intent_manager.requests.get", return_value=mock_response)
-
-        response = {
-            "files": [],
-            "result": [
-                "test",
-                "response"
-            ]
-        }
-
-        expected_response = {
-            "channel": 1,
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "Do you want me to predict community smells?"
-                    }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "Yes",
-                                "emoji": True
-                            },
-                            "value": "yes",
-                            "action_id": "action-yes"
-                        },
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "No",
-                                "emoji": True
-                            },
-                            "value": "no",
-                            "action_id": "action-no"
-                        }
-                    ]
-                }
-            ]
-        }
-
-        response, results, entities, intent = cadocs_instance.new_message(
-            exec_data, channel_test, user)
-
-        # Assertions
-        assert response == expected_response
         assert results == None
         assert entities == None
         assert intent == None

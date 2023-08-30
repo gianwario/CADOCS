@@ -44,7 +44,7 @@ class TestSlackAPIConnectionIT:
                             "chat_postMessage", return_value=data_test.get("message"))
 
         mocker.patch('src.api.slack_api_connection.os.environ.get', side_effect=[
-            "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77", "CSDETECTOR_URL_GETSMELLS"])
+            "CADOCSNLU_URL_PREDICT", "0.55", "CSDETECTOR_URL_GETSMELLS"])
 
         response_intent_manager = {
             "intent": {
@@ -76,7 +76,7 @@ class TestSlackAPIConnectionIT:
 
         # Mock os.environ.get method
         mocker.patch('intent_handling.tools.os.environ.get', side_effect=[
-            "CADOCSNLU_URL_PREDICT", "0.77", "0.55", "0.77"])
+            "CADOCSNLU_URL_PREDICT", "0.55"])
 
         expected_response = {"message": "true"}
         response = slack_api_connection.handle_request(payload)

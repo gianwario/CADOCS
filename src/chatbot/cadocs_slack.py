@@ -39,12 +39,8 @@ class CadocsSlack:
                 return self.error_message("date", channel, user.get('profile').get('first_name'))
             elif not valid_link(entities[0]) and not valid_date(entities[1]):
                 return self.error_message("date_url", channel, user.get('profile').get('first_name'))
-        # checking if the message has enough confidence to be executed directly (otherwise active learning mechanism will start)
-        if not exec_data["approved"] and confidence < float(os.environ.get('ACTIVE_LEARNING_THRESHOLD', "0.77")) and confidence >= float(os.environ.get('MINIMUM_CONFIDENCE', "0.55")):
-            self.conversation_queue.append(exec_data)
-            return self.ask_confirm(intent, channel, user.get('id')), None, None, None
-        # if the message can be processed directly
-        elif (confidence >= float(os.environ.get('ACTIVE_LEARNING_THRESHOLD', "0.77")) or exec_data["approved"]):
+        # if the confidence is greater than the MINIMUM_CONFIDENCE threshold, the message can be processed directly
+        if (confidence > float(os.environ.get('MINIMUM_CONFIDENCE', "0.55"))):
             # we instantiate the resolver of the intents
             resolver = IntentResolver()
             entities.append(user["id"])
@@ -54,8 +50,7 @@ class CadocsSlack:
             if (intent == CadocsIntents.Report):
                 last_ex = cadocs_utils.get_last_execution(user.get('id'))
                 results = last_ex.get('results')
-                entities = [last_ex.get('repo'), last_ex.get(
-                    'date'), last_ex.get('exec_type')]
+                entities = [last_ex.get('repo'), last_ex.get('date'), last_ex.get('exec_type')]
             # ask a function to create a slack message
             response = build_message(
                 results, user, channel, intent, entities)
@@ -65,62 +60,8 @@ class CadocsSlack:
             # build the text of the message based on the results
             return response, results, entities, intent
         # if the confidence is too low, an error message will be displayed
-        elif confidence < float(os.environ.get('MINIMUM_CONFIDENCE', "0.55")):
+        else:
             return build_error_message(channel, user.get('profile').get('first_name')), None, None, None
-
-    # this method builds a message that will ask the user if
-    # the intent was correctly predicted
-    # this information will be used to retrain the model
-    def ask_confirm(self, intent, channel, user):
-        self.asked_user = user
-        text = ""
-        if intent == CadocsIntents.GetSmells:
-            text = "Do you want me to predict community smells?"
-        elif intent == CadocsIntents.GetSmellsDate:
-            text = "Do you want me to predict community smells starting from a specific date?"
-        elif intent == CadocsIntents.Report:
-            text = "Do you want me to show a report of your last execution?"
-        elif intent == CadocsIntents.Info:
-            text = "Do you want to know more about community smells?"
-        mess = {
-            "channel": channel,
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": text
-                    }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "Yes",
-                                "emoji": True
-                            },
-                            "value": "yes",
-                            "action_id": "action-yes"
-                        },
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "No",
-                                "emoji": True
-                            },
-                            "value": "no",
-                            "action_id": "action-no"
-                        }
-                    ]
-                }
-            ]
-        }
-
-        return mess
 
     # error message building for bad requests (messages shown before even executing the tool)
     def error_message(self, error_type, channel, username):

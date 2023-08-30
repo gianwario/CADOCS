@@ -17,7 +17,6 @@ class TestCadocsSlackUT:
     def test_new_message_get_smells_valid_link_high_confidence(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https-://github.com/tensorflow/ranking",
-            "approved": True,
             "executed": False
         }
         user = {
@@ -55,51 +54,9 @@ class TestCadocsSlackUT:
         assert entities == ["https://github.com/tensorflow/ranking", 1]
         assert intent == CadocsIntents.GetSmells
 
-    def test_new_message_get_smells_valid_link_medium_confidence(self, cadocs_instance, mocker):
-        exec_data = {
-            "text": "can you get community smells for this repo https://github.com/tensorflow/ranking",
-            "approved": False,
-            "executed": False
-        }
-        user = {
-            "id": 1,
-            "username": "user",
-            "profile": {"first_name": "user_test"}
-        }
-
-        mocked_intent = CadocsIntents.GetSmells
-        mocked_entities = ["https://github.com/tensorflow/ranking"]
-        mocked_confidence = 0.6
-
-        # Mock the IntentManager object
-        mocker.patch.object(IntentManager, 'detect_intent', return_value=(
-            mocked_intent, mocked_entities, mocked_confidence))
-
-        # Mock the valid_link method
-        mocker.patch('src.chatbot.cadocs_slack.valid_link', return_value=True)
-
-        # Mock the ask_confirm method
-        mocked_result = "Confirm message"
-        mocker.patch.object(CadocsSlack, 'ask_confirm',
-                            return_value=(mocked_result))
-
-        # Mock the build_message method
-        mocker.patch('src.chatbot.cadocs_slack.build_message',
-                            return_value="get smells")
-
-        response, results, entities, intent = cadocs_instance.new_message(
-            exec_data, "channel", user)
-
-        # Assertions
-        assert response == mocked_result
-        assert results == None
-        assert entities == None
-        assert intent == None
-
     def test_new_message_get_smells_valid_link_low_confidence(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https://github.com/tensorflow/ranking",
-            "approved": False,
             "executed": False
         }
         user = {
@@ -136,7 +93,6 @@ class TestCadocsSlackUT:
     def test_new_message_get_smells_not_valid_link(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https:github.comtensorflowranking",
-            "approved": True,
             "executed": False
         }
 
@@ -170,7 +126,6 @@ class TestCadocsSlackUT:
     def test_new_message_get_smells_date_valid_link_valid_date_high_confidence(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https://github.com/tensorflow/ranking from 12/12/2022",
-            "approved": True,
             "executed": False
         }
         user = {
@@ -213,55 +168,9 @@ class TestCadocsSlackUT:
             "https://github.com/tensorflow/ranking", "12/12/2022", 1]
         assert intent == CadocsIntents.GetSmellsDate
 
-    def test_new_message_get_smells_date_valid_link_valid_date_medium_confidence(self, cadocs_instance, mocker):
-        exec_data = {
-            "text": "can you get community smells for this repo https://github.com/tensorflow/ranking from 12/12/2022",
-            "approved": False,
-            "executed": False
-        }
-        user = {
-            "id": 1,
-            "username": "user",
-            "profile": {"first_name": "user_test"}
-        }
-
-        mocked_intent = CadocsIntents.GetSmellsDate
-        mocked_entities = [
-            "https://github.com/tensorflow/ranking", "12/12/2022"]
-        mocked_confidence = 0.6
-
-        # Mock the IntentManager object
-        mocker.patch.object(IntentManager, 'detect_intent', return_value=(
-            mocked_intent, mocked_entities, mocked_confidence))
-
-        # Mock the valid_link method
-        mocker.patch('src.chatbot.cadocs_slack.valid_link', return_value=True)
-
-        # Mock the valid_date method
-        mocker.patch('src.chatbot.cadocs_slack.valid_date', return_value=True)
-
-        # Mock the ask_confirm method
-        mocked_result = "Confirm message"
-        mocker.patch.object(CadocsSlack, 'ask_confirm',
-                            return_value=(mocked_result))
-
-        # Mock the build_message method
-        mocker.patch('src.chatbot.cadocs_slack.build_message',
-                            return_value="get smells")
-
-        response, results, entities, intent = cadocs_instance.new_message(
-            exec_data, "channel", user)
-
-        # Assertions
-        assert response == mocked_result
-        assert results == None
-        assert entities == None
-        assert intent == None
-
     def test_new_message_get_smells_date_valid_link_valid_date_low_confidence(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https://github.com/tensorflow/ranking from 12/12/2022",
-            "approved": False,
             "executed": False
         }
         user = {
@@ -302,7 +211,6 @@ class TestCadocsSlackUT:
     def test_new_message_get_smells_date_not_valid_link(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https:github.comtensorflowranking from 12/12/2022",
-            "approved": True,
             "executed": False
         }
 
@@ -340,7 +248,6 @@ class TestCadocsSlackUT:
     def test_new_message_get_smells_date_not_valid_date(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https:github.comtensorflowranking from 1212/2022",
-            "approved": True,
             "executed": False
         }
 
@@ -378,7 +285,6 @@ class TestCadocsSlackUT:
     def test_new_message_get_smells_date_not_valid_link_not_valid_date(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you get community smells for this repo https:github.comtensorflowranking from 12/12/2022",
-            "approved": True,
             "executed": False
         }
 
@@ -416,7 +322,6 @@ class TestCadocsSlackUT:
     def test_new_message_report(self, cadocs_instance, mocker):
         exec_data = {
             "text": "can you give me your last report",
-            "approved": True,
             "executed": False
         }
 
@@ -460,59 +365,6 @@ class TestCadocsSlackUT:
         assert entities == [
             "https://github.com/tensorflow/ranking", "12/12/2022", "get_smells"]
         assert intent == CadocsIntents.Report
-
-    @pytest.mark.parametrize("intent, text", [
-        (CadocsIntents.GetSmells, "Do you want me to predict community smells?"),
-        (CadocsIntents.GetSmellsDate,
-         "Do you want me to predict community smells starting from a specific date?"),
-        (CadocsIntents.Report, "Do you want me to show a report of your last execution?"),
-        (CadocsIntents.Info, "Do you want to know more about community smells?"),
-    ])
-    def test_ask_confirm_get_smell(self, cadocs_instance, intent, text):
-        user = "user"
-        channel = "channel"
-
-        msg = {
-            "channel": channel,
-            "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": text
-                    }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "Yes",
-                                "emoji": True
-                            },
-                            "value": "yes",
-                            "action_id": "action-yes"
-                        },
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "No",
-                                "emoji": True
-                            },
-                            "value": "no",
-                            "action_id": "action-no"
-                        }
-                    ]
-                }
-            ]
-        }
-
-        response = cadocs_instance.ask_confirm(intent, channel, user)
-
-        assert response == msg
 
     def test_error_message_url(self, cadocs_instance):
         error_type = "url"

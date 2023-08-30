@@ -149,7 +149,6 @@ In case you faced some error installing the Anaconda environment, please proceed
     SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
     SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
     GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub account settings (make sure you give at least the "Repo" permissions)
-    ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
     MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
     CADOCSNLU_URL_PREDICT = https://sesacadocs.eu.ngrok.io/cadocsNLU/predict
     CADOCSNLU_URL_UPDATE = https://sesacadocs.eu.ngrok.io/cadocsNLU/update
@@ -197,7 +196,6 @@ This section will explain how to put together the three modules in order to make
     SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
     SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
     GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub settings
-    ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
     MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
     CADOCSNLU_URL_PREDICT = YOUR_NGROK_URL/cadocsNLU/predict
     CADOCSNLU_URL_UPDATE = YOUR_NGROK_URL/cadocsNLU/update
