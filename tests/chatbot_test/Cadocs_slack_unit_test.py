@@ -366,10 +366,14 @@ class TestCadocsSlackUT:
             "https://github.com/tensorflow/ranking", "12/12/2022", "get_smells"]
         assert intent == CadocsIntents.Report
 
-    def test_error_message_url(self, cadocs_instance):
+    def test_error_message_url(self, cadocs_instance, mocker):
         error_type = "url"
         username_test = "user_test"
         channel_test = 1
+
+        # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="en")
+
         txt = "Hi "+username_test+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub."
         expected_response = {"channel": channel_test, "blocks": [{
             "type": "section",
@@ -389,10 +393,41 @@ class TestCadocsSlackUT:
         assert response3 == None
         assert response4 == None
 
-    def test_error_message_date(self, cadocs_instance):
+    def test_error_message_url_it(self, cadocs_instance, mocker):
+        error_type = "url"
+        username_test = "user_test"
+        channel_test = 1
+
+        # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="it")
+
+        txt = "Ciao "+username_test+", è stato riscontrato un errore nella elaborazione della sua richiesta. \n È stato fornito un link ad una repository non valido. Verificare la disponibilità del link su GitHub"
+        expected_response = {"channel": channel_test, "blocks": [{
+            "type": "section",
+            "text": {
+                "type": "plain_text",
+                "text": txt,
+                "emoji": True
+            }
+        }]}
+
+        response1, response2, response3, response4 = cadocs_instance.error_message(
+            error_type, channel_test, username_test)
+
+        # Assertions
+        assert response1 == expected_response
+        assert response2 == None
+        assert response3 == None
+        assert response4 == None    
+
+    def test_error_message_date(self, cadocs_instance, mocker):
         error_type = "date"
         username_test = "user_test"
         channel_test = 1
+        
+        # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="en")
+
         txt = "Hi "+username_test+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct formats are MM/DD/YYYY, MM.DD.YYYY or MM-DD-YYYY."
         expected_response = {"channel": channel_test, "blocks": [{
             "type": "section",
@@ -412,10 +447,41 @@ class TestCadocsSlackUT:
         assert response3 == None
         assert response4 == None
 
-    def test_error_message_date_url(self, cadocs_instance):
+    def test_error_message_date_it(self, cadocs_instance, mocker):
+        error_type = "date"
+        username_test = "user_test"
+        channel_test = 1
+        
+        # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="it")
+
+        txt = "Ciao "+username_test+", è stato riscontrato un errore nella elaborazione della sua richiesta. \n È stata fornita una data di inizio non valida. I formati accettati sono: MM/GG/AAAA, MM.GG.AAAA or MM-GG-AAAA."
+        expected_response = {"channel": channel_test, "blocks": [{
+            "type": "section",
+            "text": {
+                "type": "plain_text",
+                "text": txt,
+                "emoji": True
+            }
+        }]}
+
+        response1, response2, response3, response4 = cadocs_instance.error_message(
+            error_type, channel_test, username_test)
+
+        # Assertions
+        assert response1 == expected_response
+        assert response2 == None
+        assert response3 == None
+        assert response4 == None    
+
+    def test_error_message_date_url(self, cadocs_instance, mocker):
         error_type = "date_url"
         username_test = "user_test"
         channel_test = 1
+
+        # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="en")
+
         txt = "Hi "+username_test + \
             ", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY)."
         expected_response = {"channel": channel_test, "blocks": [{
@@ -436,13 +502,64 @@ class TestCadocsSlackUT:
         assert response3 == None
         assert response4 == None
 
-    def test_something_wrong(self, cadocs_instance):
+    def test_error_message_date_url_it(self, cadocs_instance, mocker):
+        error_type = "date_url"
+        username_test = "user_test"
         channel_test = 1
+
+        # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="it")
+
+        txt = "Ciao "+username_test+", è stato riscontrato un errore nella elaborazione della sua richiesta. \
+                    \n  Sono stati forniti un link a una repository non valido e una data di inizio non valida. Verificare la disponibilità del link su GitHub e il formato della data (MM/GG/AAAA)."
+        expected_response = {"channel": channel_test, "blocks": [{
+            "type": "section",
+            "text": {
+                "type": "plain_text",
+                "text": txt,
+                "emoji": True
+            }
+        }]}
+
+        response1, response2, response3, response4 = cadocs_instance.error_message(
+            error_type, channel_test, username_test)
+
+        # Assertions
+        assert response1 == expected_response
+        assert response2 == None
+        assert response3 == None
+        assert response4 == None    
+
+    def test_something_wrong(self, cadocs_instance, mocker):
+        channel_test = 1
+
+         # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="en")
+
         expected_response = {"channel": channel_test, "blocks": [{
             "type": "section",
             "text": {
                 "type": "plain_text",
                 "text": "Something went wrong with your request. Please try again",
+                "emoji": True
+            }
+        }]}
+        response = cadocs_instance.something_wrong(channel_test)
+
+        # Assertions
+        assert response == expected_response
+
+    def test_something_wrong_it(self, cadocs_instance, mocker):
+        channel_test = 1
+
+         # Mock of LanguageHandler.get_current_language method of the CadocsSlack module
+        mocker.patch('src.chatbot.cadocs_slack.LanguageHandler.get_current_language', return_value="it")
+
+        expected_response = {"channel": channel_test, "blocks": [{
+            "type": "section",
+            "text": {
+                "type": "plain_text",
+                "text": "Si è verificato un errore con la sua richiesta. Si prega di riprovare",
                 "emoji": True
             }
         }]}

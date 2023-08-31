@@ -3,6 +3,7 @@ from src.intent_handling.intent_resolver import IntentResolver
 from src.chatbot import cadocs_utils
 from src.service.cadocs_messages import build_error_message, build_message
 from src.intent_handling.cadocs_intents import CadocsIntents
+from service.language_handler import LanguageHandler
 import os
 from dotenv import load_dotenv
 from src.service.utils import valid_link, valid_date
@@ -12,6 +13,7 @@ load_dotenv('src/.env')
 
 
 class CadocsSlack:
+
 
     def __init__(self):
         self.last_repo = ""
@@ -65,14 +67,25 @@ class CadocsSlack:
 
     # error message building for bad requests (messages shown before even executing the tool)
     def error_message(self, error_type, channel, username):
+        lang = LanguageHandler().get_current_language()
         txt = ""
-        if (error_type == "url"):
-            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub."
-        if (error_type == "date"):
-            txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct formats are MM/DD/YYYY, MM.DD.YYYY or MM-DD-YYYY."
-        if (error_type == "date_url"):
-            txt = "Hi "+username + \
-                ", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY)."
+        if lang == "en":           
+            if (error_type == "url"):
+                txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid repository link. Check the availability of the link on GitHub."
+            if (error_type == "date"):
+                txt = "Hi "+username+", there was an error processing your request. \n You provided an invalid starting date. Remember that the correct formats are MM/DD/YYYY, MM.DD.YYYY or MM-DD-YYYY."
+            if (error_type == "date_url"):
+                txt = "Hi "+username + \
+                    ", there was an error processing your request. \n You provided an invalid repository link and an invalid starting date. Check both the availability of the link on GitHub and the format of the date (MM/DD/YYYY)."
+        elif lang == "it":
+            if (error_type == "url"):
+                txt = "Ciao "+username+", è stato riscontrato un errore nella elaborazione della sua richiesta. \n È stato fornito un link ad una repository non valido. Verificare la disponibilità del link su GitHub"
+            if (error_type == "date"):
+                txt = "Ciao "+username+", è stato riscontrato un errore nella elaborazione della sua richiesta. \n È stata fornita una data di inizio non valida. I formati accettati sono: MM/GG/AAAA, MM.GG.AAAA or MM-GG-AAAA."
+            if (error_type == "date_url"):
+                txt = "Ciao "+username+", è stato riscontrato un errore nella elaborazione della sua richiesta. \
+                    \n  Sono stati forniti un link a una repository non valido e una data di inizio non valida. Verificare la disponibilità del link su GitHub e il formato della data (MM/GG/AAAA)."
+
 
         return {"channel": channel, "blocks": [{
             "type": "section",
@@ -84,11 +97,19 @@ class CadocsSlack:
         }]}, None, None, None
     
     def something_wrong(self, channel):
+
+        lang = LanguageHandler().get_current_language()
+        txt = ""
+        if lang == "en":           
+            txt = "Something went wrong with your request. Please try again"
+        elif lang == "it":
+            txt = "Si è verificato un errore con la sua richiesta. Si prega di riprovare"
+
         return {"channel": channel, "blocks": [{
             "type": "section",
             "text": {
                 "type": "plain_text",
-                "text": "Something went wrong with your request. Please try again",
+                "text": txt,
                 "emoji": True
             }
         }]}
