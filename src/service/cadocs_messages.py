@@ -1,27 +1,39 @@
 import json
 from src.intent_handling.cadocs_intents import CadocsIntents
+from service.language_handler import LanguageHandler
 
 # building of the message for the intent GetCommunitySmells or GetCommunitySmellsDate
 def build_cs_message(smells, channel, user, entities):
+    lang = LanguageHandler().get_current_language()
+
     print(smells, entities)
     # blocks that will be displayed in slack
     blocks = []
+    if lang == "en":
+        text = "Hi " + user + " :wave:"
+    elif lang == "it":
+        text = "Ciao " + user + " :wave:"
+
     blocks.append(
         {
             "type": "header",
             "text": {
                 "type": "plain_text",
-                "text": "Hi "+user+" :wave:",
+                "text": text,
                 "emoji": True
             }
         }
     )
     if len(entities) > 2:
-        text = "These are the community smells we were able to detect in the repository " + \
-            entities[0]+" starting from "+entities[1]+":"
+        if lang == "en":
+            text = "These are the community smells we were able to detect in the repository " + entities[0] + " starting from " + entities[1] + ":"
+        elif lang == "it":
+            text = "Questi sono i community smells che siamo stati in grado di rilevare nella repository " + entities[0] + " a partire da " + entities[1] + ":"
     else:
-        text = "These are the community smells we were able to detect in the repository " + \
-            entities[0]+":"
+        if lang == "en":
+            text = "These are the community smells we were able to detect in the repository " + entities[0] + ":"
+        elif lang == "it":
+            text = "Questi sono i community smells che siamo stati in grado di rilevare nella repository " + entities[0] + ":"
     blocks.append(
         {
             "type": "section",
@@ -33,7 +45,11 @@ def build_cs_message(smells, channel, user, entities):
         }
     )
     # appending blocks for each smell detected
-    with open('src/community_smells.json') as fp:
+    if lang == "en":
+        fileName = 'src/community_smells.json'
+    elif lang == "it":
+        fileName = 'src/community_smells_it.json'
+    with open(fileName) as fp:
         data = json.load(fp)
         for s in smells:
             smell_data = [sm for sm in data if sm["acronym"] == s]
@@ -54,12 +70,15 @@ def build_cs_message(smells, channel, user, entities):
 
             # appending strategies if existing
             if (len(strategies) > 0):
-
+                if lang == "en":
+                    text = "Some possible mitigation strategies are:"
+                elif lang == "it":
+                    text = "Alcuni possibili strategie per la mitigazione sono:"
                 blocks.append({
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "Some possible mitigation strategies are:"
+                        "text": text
                     }
                 })
                 for st in strategies:
@@ -76,12 +95,16 @@ def build_cs_message(smells, channel, user, entities):
     blocks.append({
         "type": "divider"
     })
+    if lang == "en":
+        text = "See you soon :wave:"
+    elif lang == "it":
+        text = "A presto :wave:"
     blocks.append(
         {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "See you soon :wave:"
+                "text": text
             }
         }
     )
@@ -93,23 +116,33 @@ def build_cs_message(smells, channel, user, entities):
 
 # building the message for the Report intent
 def build_report_message(channel, exec_type, results, user, entities):
+    lang = LanguageHandler().get_current_language()
+    
     # blocks that will be displayed in slack
     blocks = []
+    if lang == "en":
+        text = "Hi " + user + " :wave:"
+    elif lang == "it":
+        text = "Ciao " + user + " :wave:"
     blocks.append(
         {
             "type": "header",
             "text": {
                 "type": "plain_text",
-                "text": "Hi "+user+" :wave:",
+                "text": text,
                 "emoji": True
             }
         }
     )
+    if lang == "en":
+        text = "This is a summary of your last execution"
+    elif lang == "it":
+        text = "Questo è una sintesi della tua ultima esecuzione"
     blocks.append({
         "type": "section",
         "text": {
             "type": "plain_text",
-            "text": "This is a summary of your last execution",
+            "text": text,
             "emoji": True
         }
     })
@@ -151,27 +184,42 @@ def build_report_message(channel, exec_type, results, user, entities):
 
 # building the message containing basic information about community smells
 def build_info_message(channel, user):
+    lang = LanguageHandler().get_current_language()
+    
     blocks = []
+    if lang == "en":
+        text = "Hi " + user + " :wave:"
+    elif lang == "it":
+        text = "Ciao " + user + " :wave:"
     blocks.append({
         "type": "header",
         "text": {
             "type": "plain_text",
-            "text": "Hi "+user+" :wave:",
+            "text": text,
             "emoji": True
         }
     })
+
+    if lang == "en":
+        text = "These are the *community smells* I can detect in your development communities:"
+    elif lang == "it":
+        text = "Questi sono i *community smells* che riesco a individuare nelle vostre community:"
     blocks.append({
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "These are the *community smells* I can detect in your development communities:"
+            "text": text
         }
     })
     blocks.append({
         "type": "divider"
     })
 
-    with open('src/community_smells.json') as fp:
+    if lang == "en":
+        fileName = 'src/community_smells.json'
+    elif lang == "it":
+        fileName = 'src/community_smells_it.json'
+    with open(fileName) as fp:
         data = json.load(fp)
         for i in data:
             blocks.append(
@@ -186,11 +234,15 @@ def build_info_message(channel, user):
     blocks.append({
         "type": "divider"
     })
+    if lang == "en":
+        text = "If you want to remain up-to-date, please follow us on our social networks:\n -Instagram: <https://www.instagram.com/sesa_lab/|sesa_lab> \t -Twitter: <https://twitter.com/sesa_lab|@SeSa_Lab> \t -Website: <https://sesalabunisa.github.io/en/index.html|sesalabunisa.github.io> \n Also, feel free to get in touch with us to have a discussion about the subject by sending us an email at slambiase@unisa.it!"
+    elif lang == "it":
+        text = "Se volete rimanere aggiornati, seguite i canali social:\n -Instagram: <https://www.instagram.com/sesa_lab/|sesa_lab> \t -Twitter: <https://twitter.com/sesa_lab|@SeSa_Lab> \t -Sito web: <https://sesalabunisa.github.io/en/index.html|sesalabunisa.github.io> \n Inoltre, sentitevi liberi di mettervi in contatto con noi per discutere dell'argomento inviandoci una mail a slambiase@unisa.it!"
     blocks.append({
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "If you want to remain up-to-date, please follow us on our social networks:\n -Instagram: <https://www.instagram.com/sesa_lab/|sesa_lab> \t -Twitter: <https://twitter.com/sesa_lab|@SeSa_Lab> \t -Website: <https://sesalabunisa.github.io/en/index.html|sesalabunisa.github.io> \n Also, feel free to get in touch with us to have a discussion about the subject by sending us an email at slambiase@unisa.it!"
+            "text": text
         }
     })
     return {
@@ -199,6 +251,12 @@ def build_info_message(channel, user):
     }
 
 def build_error_message(channel, user):
+    lang = LanguageHandler().get_current_language()
+    
+    if lang == "en":
+        text = "Hi "+user+", I'm sorry but I did not understand your intent. Please be more specific!"
+    elif lang == "it":
+        text = "Ciao "+user+", mi dispiace ma non sono riuscito a comprendere il suo intent. La prego di essere più specifico!"
     return {
         "channel": channel,
         "blocks": [
@@ -206,7 +264,7 @@ def build_error_message(channel, user):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "Hi "+user+", I'm sorry but I did not understand your intent. Please be more specific!"
+                    "text": text
                 }
             }
         ]
