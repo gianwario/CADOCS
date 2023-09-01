@@ -16,6 +16,7 @@ from src.chatbot.cadocs_slack import CadocsSlack
 from src.chatbot import cadocs_utils
 from datetime import date
 from src.intent_handling.cadocs_intents import CadocsIntents
+from service.language_handler import LanguageHandler
 from dotenv import load_dotenv
 import time
 load_dotenv('src/.env')
@@ -34,8 +35,6 @@ slack_web_client = WebClient(token=os.environ.get('SLACK_TOKEN', ""))
 cadocs = CadocsSlack()
 
 # This event will fire up every time there is a new message on a chat with the bot invited
-
-
 @slack_events_adapter.on("message")
 def answer(payload):
     # starting a new thread to do the actual processing
@@ -62,6 +61,9 @@ def handle_request(payload):
         "text": event.get("text"),
         "executed": False
     }
+    # Set the language of the message
+    LanguageHandler().detect_language(exec_data.get("text"))
+
     # print(conversation)
     # check wether or not the message has been written by the bot (we dont have to answer) or if the message is valid
     if event.get('bot_id') is None and event.get('user') is not None and exec_data.get("text") != '' and exec_data.get('id') is not None:
@@ -97,18 +99,29 @@ def handle_request(payload):
 
 
 def post_waiting_message(channel):
-    # we post the waiting message
+    # create LanguageHandler instance
+    language_handler = LanguageHandler()
+    language = language_handler.get_current_language()
+    # check if the language is english
+    if(language == "en"):
+       text = "We are handling your request..."
+    # check if the language is italian
+    elif(language == "it"):
+       text = "Stiamo elaborando la tua richiesta"
+
+    # we post waiting message
     message = slack_web_client.chat_postMessage(**{
         "channel": channel,
         "blocks": [{
             "type": "section",
             "text": {
                     "type": "plain_text",
-                    "text": "We are handling your request...",
+                    "text": text,
                     "emoji": True
             }
         }]
     })
+
     ts = message.get("ts")
     # we start a thread that tells the user we are running the tool
     progress = threading.Thread(
@@ -117,8 +130,6 @@ def post_waiting_message(channel):
     return progress
 
 # this method will show the cat-gress of the execution by updating itself until the main thread stops
-
-
 def update_waiting_message(channel, ts):
     i = 0
     elapsed_time = 0
@@ -133,12 +144,23 @@ def update_waiting_message(channel, ts):
             emojis = emojis + ":smile_cat:"
         time.sleep(1)
         elapsed_time += 1
+
+        # create LanguageHandler instance
+        language_handler = LanguageHandler()
+        language = language_handler.get_current_language()
+        # check if the language is english
+        if(language == "en"):
+            text = "We are handling your request...\n"
+        # check if the language is italian
+        elif(language == "it"):
+            text = "Stiamo elaborando la tua richiesta...\n"
+
         slack_web_client.chat_update(channel=channel, ts=ts, blocks=[
             {
                 "type": "section",
                         "text": {
                             "type": "plain_text",
-                            "text": "We are handling your request...\n" + emojis + "",
+                            "text": text + emojis + "",
                             "emoji": True
                         }
             }

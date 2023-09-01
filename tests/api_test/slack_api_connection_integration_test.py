@@ -3,27 +3,33 @@ from src.chatbot import cadocs_slack
 from src.service import utils
 from src.chatbot.cadocs_slack import CadocsSlack
 from src.intent_handling.cadocs_intents import CadocsIntents
+from service.language_handler import LanguageHandler
 import pytest
 import requests
 from unittest.mock import Mock, patch
 
 
 class TestSlackAPIConnectionIT:
-
     def mock_handle_request(self):
         return "test_value"
 
-    def test_handle_request(self, mocker):
+    # Parametrization of tests with english and italian message
+    @pytest.mark.parametrize("text", [
+        "can you detect community smells in this repo https://github.com/tensorflow/ranking ?",
+        "puoi rilevare quali community smells sono in questo progetto https://github.com/tensorflow/ranking ?"
+    ])
+    def test_handle_request(self, mocker, text):
 
         data_test = {"channel": {"id": 1},
                      "user": {"id": "id_test"},
                      "actions": [{"action_id": "action-yes"}],
                      "message": {"ts": 10}}
 
+
         event = {
             "client_msg_id": "msg_test",
             "user": "user_test",
-            "text": "can you detect community smells in this repo https://github.com/tensorflow/ranking?",
+            "text": text,
             "bot_id": None,
             "channel": "channel_test"
         }
