@@ -4,7 +4,7 @@ from src.service import cadocs_messages
 import pytest
 import json
 from tests import utils_tests
-from service.language_handler import LanguageHandler
+from src.service.language_handler import LanguageHandler
 
 class TestCadocsMessagesIT:
 

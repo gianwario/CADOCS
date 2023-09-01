@@ -3,7 +3,7 @@ from src.chatbot import cadocs_slack
 from src.service import utils
 from src.chatbot.cadocs_slack import CadocsSlack
 from src.intent_handling.cadocs_intents import CadocsIntents
-from service.language_handler import LanguageHandler
+from src.service.language_handler import LanguageHandler
 import pytest
 import requests
 from unittest.mock import Mock, patch

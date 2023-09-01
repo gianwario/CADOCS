@@ -16,7 +16,7 @@ from src.chatbot.cadocs_slack import CadocsSlack
 from src.chatbot import cadocs_utils
 from datetime import date
 from src.intent_handling.cadocs_intents import CadocsIntents
-from service.language_handler import LanguageHandler
+from src.service.language_handler import LanguageHandler
 from dotenv import load_dotenv
 import time
 load_dotenv('src/.env')

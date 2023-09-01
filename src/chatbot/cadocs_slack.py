@@ -3,7 +3,7 @@ from src.intent_handling.intent_resolver import IntentResolver
 from src.chatbot import cadocs_utils
 from src.service.cadocs_messages import build_error_message, build_message
 from src.intent_handling.cadocs_intents import CadocsIntents
-from service.language_handler import LanguageHandler
+from src.service.language_handler import LanguageHandler
 import os
 from dotenv import load_dotenv
 from src.service.utils import valid_link, valid_date
