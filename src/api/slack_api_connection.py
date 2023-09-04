@@ -55,14 +55,17 @@ def handle_request(payload):
     print(event)
     print(slack_web_client.auth_test())
     # print(json.dumps(payload, indent=4, sort_keys=True))
+    msg_text = event.get("text")
     exec_data = {
         "id": event.get("client_msg_id"),
         "user": event.get("user"),
-        "text": event.get("text"),
+        "text": msg_text,
         "executed": False
     }
     # Set the language of the message
-    LanguageHandler().detect_language(exec_data.get("text"))
+    
+    if (msg_text != None) and (msg_text != ""):
+        LanguageHandler().detect_language(msg_text)
 
     # print(conversation)
     # check wether or not the message has been written by the bot (we dont have to answer) or if the message is valid
@@ -99,6 +102,7 @@ def handle_request(payload):
 
 
 def post_waiting_message(channel):
+    text=""
     # create LanguageHandler instance
     language_handler = LanguageHandler()
     language = language_handler.get_current_language()
@@ -107,7 +111,7 @@ def post_waiting_message(channel):
        text = "We are handling your request..."
     # check if the language is italian
     elif(language == "it"):
-       text = "Stiamo elaborando la tua richiesta"
+       text = "Stiamo elaborando la sua richiesta"
 
     # we post waiting message
     message = slack_web_client.chat_postMessage(**{
@@ -153,7 +157,7 @@ def update_waiting_message(channel, ts):
             text = "We are handling your request...\n"
         # check if the language is italian
         elif(language == "it"):
-            text = "Stiamo elaborando la tua richiesta...\n"
+            text = "Stiamo elaborando la sua richiesta...\n"
 
         slack_web_client.chat_update(channel=channel, ts=ts, blocks=[
             {
