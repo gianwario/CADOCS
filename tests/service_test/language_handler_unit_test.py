@@ -34,3 +34,12 @@ class TestLanguageHandlerUT:
 
         # Assertions
         assert language_handler.get_current_language() == "it"
+
+    # This method tests the replacement of cadocs-specific words inside the message
+    def test_replace_message(self, language_handler):
+        # It was decided not to mock the "re.compile" function in this unit test
+        response = language_handler._replace_message("Hi cadocs, what community smells can you detect on this repository?")
+        expected_response = "Hi , what   can you detect on this ?"
+
+        # Assertions
+        assert response == expected_response
