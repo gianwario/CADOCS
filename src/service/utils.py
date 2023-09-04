@@ -3,7 +3,7 @@ import re
 
 
 def valid_link(url):
-   re_equ = r"((https:\/\/)?(www\.)?github\.com\/.*)"
+   re_equ = r"((https:\/\/)(www\.)?github\.com\/.*)"
    ck_url = re.findall(re_equ, url)
    if ck_url:
       return True
