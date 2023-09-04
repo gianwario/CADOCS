@@ -161,7 +161,7 @@ class TestCadocsMessagesIT:
             "type": "section",
             "text": {
                     "type": "plain_text",
-                    "text": "Questo è una sintesi della tua ultima esecuzione",
+                    "text": "Questo è una sintesi della sua ultima esecuzione",
                     "emoji": True
             }
         })

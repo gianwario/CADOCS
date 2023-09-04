@@ -137,7 +137,7 @@ def build_report_message(channel, exec_type, results, user, entities):
     if lang == "en":
         text = "This is a summary of your last execution"
     elif lang == "it":
-        text = "Questo è una sintesi della tua ultima esecuzione"
+        text = "Questo è una sintesi della sua ultima esecuzione"
     blocks.append({
         "type": "section",
         "text": {

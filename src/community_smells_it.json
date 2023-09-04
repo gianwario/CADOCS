@@ -27,35 +27,35 @@
     {
         "acronym":"PDE",
         "name":"Prima-donnas Effect",
-        "description":"Un team di persone non è propenso a rispettare i cambiamenti esterni delle altre persone del team a causa di una collaborazione strutturata in modo inefficiente all'interno di una community.",
+        "description":"Un team di persone non \u00E8 propenso a rispettare i cambiamenti esterni delle altre persone del team a causa di una collaborazione strutturata in modo inefficiente all'interno di una community.",
         "emoji":":sparkler::crown::gem:",
         "strategies": []
     },
     {
         "acronym":"SV",
         "name":"Sharing Villainy",
-        "description":"A causa della mancanza di attività di scambio di informazioni, le persone del team condividono conoscenze essenziali come informazioni obsolete, errate e non confermate.",
+        "description":"A causa della mancanza di attivit\u00E0 di scambio di informazioni, le persone del team condividono conoscenze essenziali come informazioni obsolete, errate e non confermate.",
         "emoji":":information_desk_person::speech_balloon::x::no_good:",
         "strategies": []
     },
     {
         "acronym":"OS",
         "name":"Organizational Skirmish",
-        "description":"Un disallineamento tra i diversi livelli di competenza delle persone coinvolte nel progetto porta a un calo della produttività e influisce sulla tempistica e sui costi del progetto.",
+        "description":"Un disallineamento tra i diversi livelli di competenza delle persone coinvolte nel progetto porta a un calo della produttivit\u00E0 e influisce sulla tempistica e sui costi del progetto.",
         "emoji":":grinning::speech_balloon::worried::question:",
         "strategies":[]
     },
     {
         "acronym":"SD",
         "name":"Solution Defiance",
-        "description":"La comunità di sviluppo presenta diversi livelli di background culturale e di esperienza, che portano alla divisione della community in sottogruppi simili con opinioni completamente contrastanti.",
+        "description":"La comunit\u00E0 di sviluppo presenta diversi livelli di background culturale e di esperienza, che portano alla divisione della community in sottogruppi simili con opinioni completamente contrastanti.",
         "emoji":":busts_in_silhouette::zap::busts_in_silhouette::zap::busts_in_silhouette:",
         "strategies": []
     },
     {
         "acronym":"RS",
         "name":"Radio Silence",
-        "description":"Una persona si interpone in ogni interazione formale tra più sottocommunity, con poca flessibilità nell'introdurre altri canali.",
+        "description":"Una persona si interpone in ogni interazione formale tra pi\u00F9 sottocommunity, con poca flessibilit\u00E0 nell'introdurre altri canali.",
         "emoji":":mute::radio::mute:",
         "strategies":[
             {"strategy":"Ristrutturare la community", "stars":":star::star:"}, 
