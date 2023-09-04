@@ -12,6 +12,11 @@ class IntentResolver:
                 # we instantiate our strategy context
                 tool = ToolSelector(CsDetectorTool())
                 # then we execute the selected tool with given entities
+                # here the date (if present) is set to the format requested by csDetector
+                if len(entities) > 2:
+                    split_date = entities[1].split("/")
+                    entities[1] = ""+split_date[1]+"/"+split_date[0]+"/"+split_date[2]
+                
                 results = tool.run(entities)
                 return results
             # build info message
