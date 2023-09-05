@@ -83,7 +83,7 @@
         {
             "acronym":"TC",
             "name":"Toxic Communication",
-            "description":"Long delays in stakeholder communications cause slow, light and brief conversations and discussions.",
+            "description":"Toxic interactions and conflicting opinions among developers could push them to leave the project.",
             "emoji":":bust_in_silhouette::anger::bust_in_silhouette:",
             "strategies": []
         }

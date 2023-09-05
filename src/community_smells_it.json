@@ -83,7 +83,7 @@
     {
         "acronym":"TC",
         "name":"Toxic Communication",
-        "description":"Lunghi rinvii nelle comunicazioni con gli stakeholder causano conversazioni e discussioni lente, leggere e brevi.",
+        "description":"Interazioni tossiche ed opinioni contrastanti tra le persone del progetto potrebbero spingerli ad abbandonare al progetto.",
         "emoji":":bust_in_silhouette::anger::bust_in_silhouette:",
         "strategies": []
     }
