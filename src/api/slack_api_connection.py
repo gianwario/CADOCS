@@ -218,10 +218,10 @@ def get_smells():
     else:
         date = None
     if date is not None:
-        req = requests.get('http://localhost:5001/getSmells?repo='+repo +
+        req = requests.get('http://127.0.0.1:5001/getSmells?repo='+repo +
                            '&pat='+pat+'&user='+user+'&graphs='+str(needed_graphs)+'&date='+date)
     else:
-        req = requests.get('http://localhost:5001/getSmells?repo=' +
+        req = requests.get('http://127.0.0.1:5001/getSmells?repo=' +
                            repo+'&pat='+pat+'&user='+user+'&graphs='+str(needed_graphs))
 
     resp = req.json()
@@ -230,7 +230,7 @@ def get_smells():
 
 @app.route('/csDetector/uploads/<path:filename>')
 def download_file(filename):
-    return requests.get('http://localhost:5001/uploads/'+filename, allow_redirects=True).content
+    return requests.get('http://127.0.0.1:5001/uploads/'+filename, allow_redirects=True).content
 
 # forward to the real NLU model
 
@@ -241,7 +241,8 @@ def predict():
         message = str(request.args['message'])
     else:
         return "Error: No message to provide to the model. Please insert a valid message."
-    req = requests.get('http://localhost:5000/predict?message='+message)
+    req = requests.get('http://127.0.0.1:5000/predict?message='+message)
+    print(req)
     resp = req.json()
     return resp
 

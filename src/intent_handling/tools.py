@@ -22,9 +22,13 @@ class CsDetectorTool(Tool):
         # if there is any file
         if len(file_names) > 0:
             for fn in file_names:
-                # we make a request to get it from the csdetector folder
+                # we make a request to get it from the csdetector folder                
                 file_req = requests.get(os.environ.get('CSDETECTOR_URL_UPLOADS')+fn, allow_redirects=True)
-                els = str(fn).split("\\")
+                if "\\" in fn:
+                    els = str(fn).split("\\")
+                else:
+                    els = str(fn).split("/")
+        
                 # we save it locally
                 open('src/attachments/'+els[len(els)-1], 'wb').write(file_req.content)
         results = req.json().get("result")[1:]

@@ -117,16 +117,16 @@ class TestSlackAPIConnectionUT:
         with pytest.raises(Exception):
             slack_api_connection.handle_request(payload)
 
-    @pytest.mark.parametrize("args, expected_url", [("?repo=repo_link&pat=pat&user=user_id&graphs=True&date=12/12/2022", "http://localhost:5001/getSmells?repo=repo_link&pat=pat&user=user_id&graphs=True&date=12/12/2022"),
+    @pytest.mark.parametrize("args, expected_url", [("?repo=repo_link&pat=pat&user=user_id&graphs=True&date=12/12/2022", "http://127.0.0.1:5001/getSmells?repo=repo_link&pat=pat&user=user_id&graphs=True&date=12/12/2022"),
                                                     ("?repo=repo_link&pat=pat&graphs=True&date=12/12/2022",
-                                                     "http://localhost:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=True&date=12/12/2022"),
+                                                     "http://127.0.0.1:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=True&date=12/12/2022"),
                                                     ("?repo=repo_link&pat=pat&date=12/12/2022",
-                                                     "http://localhost:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=False&date=12/12/2022"),
+                                                     "http://127.0.0.1:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=False&date=12/12/2022"),
                                                     ("?repo=repo_link&pat=pat&user=user_id&graphs=True",
-                                                     "http://localhost:5001/getSmells?repo=repo_link&pat=pat&user=user_id&graphs=True"),
+                                                     "http://127.0.0.1:5001/getSmells?repo=repo_link&pat=pat&user=user_id&graphs=True"),
                                                     ("?repo=repo_link&pat=pat&graphs=True",
-                                                     "http://localhost:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=True"),
-                                                    ("?repo=repo_link&pat=pat", "http://localhost:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=False")])
+                                                     "http://127.0.0.1:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=True"),
+                                                    ("?repo=repo_link&pat=pat", "http://127.0.0.1:5001/getSmells?repo=repo_link&pat=pat&user=default&graphs=False")])
     def test_get_smells_wrepo_wpat(self, mocker, client, args, expected_url):
         # Mock of the Response object
         mock_response = mocker.Mock(spec=requests.Response)
@@ -182,7 +182,7 @@ class TestSlackAPIConnectionUT:
 
         client.get("/cadocsNLU/predict?message=hello i'm tester")
 
-        expected_url = "http://localhost:5000/predict?message=hello i'm tester"
+        expected_url = "http://127.0.0.1:5000/predict?message=hello i'm tester"
 
         # Assertion for verify the url called
         requests.get.assert_called_once_with(expected_url)
