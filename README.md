@@ -19,6 +19,7 @@ Specifically, this is the principal repository of the system and contains the co
 <br/>
 
 ### Installation video
+NOT Updated
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ffdimm2CvO0/0.jpg)](https://www.youtube.com/watch?v=ffdimm2CvO0)
 <br/>
 
@@ -28,14 +29,14 @@ The main elements of the repository are described below:
 
 - src: it contains the source code of the conversational agent
 - resources: it contains the survey created to build the dataset for the NLU model
-- cadocs_chatbot_env.yaml: The Anaconda environment containing the needed dependencies to install CADOCS
 
 ## Other Tools
 
 The entire CADOCS tool is composed of three modules:
 - **CADOCS** (this repository): it is the Slack App used to interact with users.
-- **CADOCS_NLU_Model** [link](https://github.com/vipenti/CADOCS_NLU_Model): it is the ML service used to interpret the users' intents.
-- **csDetector** [link](https://github.com/gianwario/csDetector): the augmented and wrapped version of csDetector, used in our tool to detect community smells and other socio-technical metrics.
+- **CADOCS_NLU_Model** [link](https://github.com/alfcan/CADOCS_NLU_Model): it is the ML service used to interpret the users' intents.
+- **csDetector** [link](https://github.com/alfcan/csDetector): the augmented and wrapped version of csDetector, used in our tool to detect community smells and other socio-technical metrics.
+The links are referred to our modified versions of the tools.
 
 ## Detectable Community Smells
 
@@ -52,7 +53,7 @@ The complete list of detectable community smells—through the use of csDetector
 | Solution Defiance | The development community presents different levels of cultural and experience background, leading to the division of the community into similar subgroups with completely conflicting opinions. | NA | 
 | Truck Factor Smell | Risk of significant knowledge loss due to the turnover of developers resulting from the fact that project information and knowledge are concentrated in a minority of the developers. | NA | 
 | Unhealthy Interaction | Long delays in stakeholder communications cause slow, light and brief conversations and discussions. | NA | 
-| Toxic Communication | Long delays in stakeholder communications cause slow, light and brief conversations and discussions. | NA |
+| Toxic Communication | Toxic interactions and conflicting opinions among developers could push them to leave the project. | NA |
 
 <!--
 ## Authors
@@ -100,28 +101,20 @@ In the Requirements section, you will find the softwares and helpers you will ne
 
 #### Requirements
 
-- Anaconda 3 - 2022.05 - 64bit
-- Windows 10
-- Microsoft Visual C++ Build Tools 14.0 or higher (In order to run Anaconda) 
 - A Slack account and a Slack workspace
-- (Optional, if you won't use Anaconda to install it) Python 3.8.3 
+- Python 3.8.3
 - ngrok (https://ngrok.com/download)
+- Having installed the CADOCS_NLU project (further details are available in the project's repository)
+- Having installed the csDetector enhanced project (further details are available in the project's repository, please refer to the branch "dev")
+
 
 #### Installation Steps
 
-- Step 1: Local installation of CADOCS (Recommended, using Anaconda)
+- Step 1: Local installation of CADOCS (Recommended)
   - Clone the current repository on your system
-  - In our repository, find the *cadocs_chatbot_env.yaml* file which contains the environment and the dependencies needed
-  - Through the Anaconda Powershell, run the following command: *conda env create -f ENV_FILE_NAME.yaml*
-
-In case you faced some error installing the Anaconda environment, please proceed with the Step 1.1
-
-- (Optional) Step 1.1: Local installation of CADOCS (Manual)
-  - Clone the current repository on your system
-  - In our repository, find the *cadocs_chatbot_env.yaml* file which contains the environment and the dependencies needed
-  - Create a new Python 3.8.3 environment
-  - Within the previously mentioned file, you will find each of the dependencies needed to run the tool
-  - Install by hand each of them in your env
+  - In our repository, find the *requirements.txt* file which contains the dependencies needed
+  - Create a virtual environment, run the following command: *python -m venv .venv*
+  - Activate the environment and run the following command: *pip install -r requirements.txt*
 
 - Step 2: Creation of a new Slack App
   - Go to the following URL https://api.slack.com/
@@ -149,15 +142,14 @@ In case you faced some error installing the Anaconda environment, please proceed
     SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
     SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
     GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub account settings (make sure you give at least the "Repo" permissions)
-    ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
     MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
     CADOCSNLU_URL_PREDICT = https://sesacadocs.eu.ngrok.io/cadocsNLU/predict
     CADOCSNLU_URL_UPDATE = https://sesacadocs.eu.ngrok.io/cadocsNLU/update
     CSDETECTOR_URL_GETSMELLS = https://sesacadocs.eu.ngrok.io/csDetector/getSmells
     CSDETECTOR_URL_UPLOADS = https://sesacadocs.eu.ngrok.io/csDetector/uploads/
   ```
-  - Within your IDE (or through command line if you feel more comfortable), make sure that the environment used to execute the tool is the one you created in the Step 1 
-  - With the environment activated, run the module *slack_api_connection.py*
+  - Within your IDE (or through command line if you feel more comfortable), make sure that the environment used to execute the tool is the one you created in Step 1 
+  - With the environment activated, run the module *slack_api_connection.py* from the CADOCS directory (command: *python src/api/slack_api_connection.py*)
 
 - Step 5: Put it all together
   - Open the Slack app you created in the Step 2 
@@ -169,64 +161,11 @@ In case you faced some error installing the Anaconda environment, please proceed
     - In the __Event Subscription__ section, insert as the request URL: YOUR_NGROK_URL/slack/events
     - In the __Interactivity & Shortcuts__ section, insert as the request URL: YOUR_NGROK_URL/slack/action-received
   - Reinstall the app in your workspace
-  - Follow the instructions in the demo video to use CADOCS!
-
-### Case 2: Full Local Installation
-
-This case is the trickiest one. Since CADOCS is based on three different modules, you will have to install by hand the three environments needed to execute each module. 
-
-After having installed each of them, you will have to create your own Slack App like the previous case.
-
-This section will explain how to put together the three modules in order to make CADOCS work. Please refer to the previous section in order to install the current project.
-
-#### Requirements
-
-- Having installed the CADOCS_NLU project (further details are available in the project's repository)
-- Having installed the csDetector enhanced project (further details are available in the project's repository, please refer to the branch "CR_2-web-service")
-
-#### Installation Steps
-
-- Step 1: Installation of CADOCS
-  - Follow the first three steps listed in the precious section (and refer to their requirements too)
-- Step 2: Configuration of CADOCS
-  - Open the project on your system with the IDE you prefer (__We suggest using Visual Studio Code or PyCharm__)
-  - Create a new file in the /src folder named "__.env__" 
-  - Within the .env file, insert the following information (with the name we will provide)
   
-  ```
-    SLACK_TOKEN = The Bot User OAuth Token that you will find in the OAuth & Permissions section within the app you created in the Step 2
-    SLACK_EVENT_TOKEN = The Signing Secret that you will find in the Basic Information section within the app you created in the Step 2
-    GIT_PAT = GitHub Personal Access Token that you can generate within the Developer Settings in your GitHub settings
-    ACTIVE_LEARNING_THRESHOLD = A numeric value that indicates the threshold of confidence needed by the agent to ask if its prediction was correct (We suggest 0.77) 
-    MINIMUM_CONFIDENCE = A numeric value that indicates the minumum confidence needed by the agent to execute an intent (We suggest 0.55)
-    CADOCSNLU_URL_PREDICT = YOUR_NGROK_URL/cadocsNLU/predict
-    CADOCSNLU_URL_UPDATE = YOUR_NGROK_URL/cadocsNLU/update
-    CSDETECTOR_URL_GETSMELLS = YOUR_NGROK_URL/csDetector/getSmells
-    CSDETECTOR_URL_UPLOADS = YOUR_NGROK_URL/csDetector/uploads/
-  ```
-  - Within your IDE (or through command line if you feel more comfortable), make sure that the environment used to execute the tool is the one you created in the Step 1 
-  - With the environment activated, run the module *slack_api_connection.py*
-
-- Step 3: Execution of the helper modules
-  - Execute the NLU web service (please refer to the CADOCS_NLU project)
-  - Execute the csDetector web service (please refer to the csDetector project)
-
-- Step 4: Put it all together
-  - Open the Slack app you created previously
-  - In the __Event Subscription__ section, toggle ON the __Enable Events__ button and, in the __Subscribe to bot events__ section, add:
-    - message.channels
-    - message.im
-  - In the __Interactivity & Shortcuts__ section, toggle ON the __Interactivity__ button
-  - Insert the following URLs:
-    - In the __Event Subscription__ section, insert as the request URL: YOUR_NGROK_URL/slack/events
-    - In the __Interactivity & Shortcuts__ section, insert as the request URL: YOUR_NGROK_URL/slack/action-received
-  - Reinstall the app in your workspace
-  - Follow the instructions in the demo video to use CADOCS!
-
 ## Contributors
 
-<a href="https://github.com/gianwario/CADOCS/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=gianwario/CADOCS" />
+<a href="https://github.com/alfcan/CADOCS/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=alfcan/CADOCS" />
 </a>
 
 <!--
